@@ -13,12 +13,22 @@ using System.Threading.Tasks;
 
 namespace ChatAssist
 {
+    struct DragonInfo
+    {
+        public string name;
+        public bool alive;
+    }
+
     public class ChatAssist : IPlugin
     {
-        private string lastMessage = "";
-        private string[] NPCIgnoreList = { "#Mystery Box Shop", "#The Alchemist", "#Login Seer", "#The Tinkerer", "#Bandit Leader", "#Drake Baby", "#Dwarf King", "#Killer Pillar", "#Haunted Armor", "#Red Demon", "#Cyclops God", "#Belladonna", "#Sumo Master", "#Avatar of the Forgotten King", "#Small Ghost", "#Medium Ghost", "#Large Ghost", "#Ghost Master", "#Ghost King", "#Lich", "#Haunted Spirit", "#Rock Construct", "#Phylactery Bearer", "#Mini Yeti", "#Big Yeti", "#Esben the Unwilling", "#Creepy Weird Dark Spirit Mirror Image Monster", "#Ent Ancient", "#Kage Kami", "#Twilight Archmage", "#The Forgotten Sentinel", "#The Cursed Crown", "#The Forgotten King", "#Titanum of Cruelty", "#Titanum of Despair", "#Titanum of Lies", "#Titanum of Hate", "#Grand Sphinx", "#Troll Matriarch", "#Dreadstump the Pirate King", "#Stone Mage", "#Deathmage", "#Horrid Reaper", "#Bes", "#Nut", "#Geb", "#Nikao the Defiler", "#Limoz the Plague Bearer", "#Feargus the Demented", "#Pyyr the Wicked", "#Ivory Wyvern", "#Red Soul of Pyrr", "#Blue Soul of Nikao", "#Green Soul of Limoz", "#Black Soul of Feargus", "#Shaitan the Advisor", "#Left Hand of Shaitan", "#Right Hand of Shaitan", "#The Puppet Master", "#Trick in a Box" };
+        private string[] NPCIgnoreList = { "#Mystery Box Shop", "#The Alchemist", "#Login Seer", "#The Tinkerer", "#Bandit Leader", "#Drake Baby", "#Dwarf King", "#Killer Pillar", "#Haunted Armor", "#Red Demon", "#Cyclops God", "#Belladonna", "#Sumo Master", "#Avatar of the Forgotten King", "#Small Ghost", "#Medium Ghost", "#Large Ghost", "#Ghost Master", "#Ghost King", "#Lich", "#Haunted Spirit", "#Rock Construct", "#Phylactery Bearer", "#Mini Yeti", "#Big Yeti", "#Esben the Unwilling", "#Creepy Weird Dark Spirit Mirror Image Monster", "#Ent Ancient", "#Kage Kami", "#Twilight Archmage", "#The Forgotten Sentinel", "#The Cursed Crown", "#The Forgotten King", "#Titanum of Cruelty", "#Titanum of Despair", "#Titanum of Lies", "#Titanum of Hate", "#Grand Sphinx", "#Troll Matriarch", "#Dreadstump the Pirate King", "#Stone Mage", "#Deathmage", "#Horrid Reaper", "#Bes", "#Nut", "#Geb", "#Nikao the Azure Dragon", "#Limoz the Veridian Dragon", "#Pyyr the Crimson Dragon", "#Feargus the Obsidian Dragon", "#Nikao the Defiler", "#Limoz the Plague Bearer", "#Feargus the Demented", "#Pyyr the Wicked", "#Ivory Wyvern", "#Red Soul of Pyrr", "#Blue Soul of Nikao", "#Green Soul of Limoz", "#Black Soul of Feargus", "#Shaitan the Advisor", "#Left Hand of Shaitan", "#Right Hand of Shaitan", "#The Puppet Master", "#Trick in a Box", "#Davy Jones", "#Lord of the Lost Lands", "#Dr Terrible" };
 
-        private string[,] NPCResponseList = { { "What time is it?", "Its pizza time!" }, { "Where is the safest place in the world?", "Inside my shell." }, { "What is fast, quiet and hidden by the night?", "A ninja of course!" }, { "How do you like your pizza?", "Extra cheese, hold the anchovies." }, { "Who did this to me?", "Dr. Terrible, the mad scientist." }, { "Is King Alexander alive?", "He lives and reigns and conquers the world" }, { "Say, 'READY' when you are ready to face your opponents.", "ready" }, { "Well, before I explain how this all works, let me tell you that you can always say SKIP and we'll just get on with it. Otherwise, just wait a sec while I get everything in order.", "skip" } };
+        private string[,] NPCResponseList = { { "What time is it?", "Its pizza time!" }, { "Where is the safest place in the world?", "Inside my shell." }, { "What is fast, quiet and hidden by the night?", "A ninja of course!" }, { "How do you like your pizza?", "Extra cheese, hold the anchovies." }, { "Who did this to me?", "Dr. Terrible, the mad scientist." }, { "Is King Alexander alive?", "He lives and reigns and conquers the world" }, { "Say, 'READY' when you are ready to face your opponents.", "ready" }, { "Prepare yourself... Say 'READY' when you wish the battle to begin!", "ready" }, { "Well, before I explain how this all works, let me tell you that you can always say SKIP and we'll just get on with it. Otherwise, just wait a sec while I get everything in order.", "skip" } };
+
+        private int lastNotif = 0;
+        private int cemCurrentWave = 0;
+        private DragonInfo[] dragons = new DragonInfo[4];
+        private string lastMessage = "";
 
         public string GetAuthor()
         { return "KrazyShank / Kronks / RotMGHacker"; }
@@ -33,12 +43,12 @@ namespace ChatAssist
         {
             return new string[]
             {
-                "/chatassist [On/Off]",
+                "/chatassist [On:Off]",
                 "/chatassist settings",
                 "/chatassist add [message] - add a string to the spam filter",
                 "/chatassist remove [message] - removes a string from the spam filter",
                 "/chatassist list - list all strings included in the spam filter",
-                "/chatassist log (On/Off) - Toggle Chat logging",
+                "/chatassist log (On:Off) - Toggle Chat logging",
                 "/re (new recipient) - Resends the last message you've typed on chat. Optionally to a new recipient."
             };
         }
@@ -51,6 +61,13 @@ namespace ChatAssist
 
             proxy.HookPacket(PacketType.TEXT, OnText);
             proxy.HookPacket(PacketType.PLAYERTEXT, OnPlayerText);
+            proxy.HookPacket(PacketType.MAPINFO, OnMapInfo);
+
+            // Initialize Dragons
+            dragons[0].name = "black";
+            dragons[1].name = "green";
+            dragons[2].name = "blue";
+            dragons[3].name = "red";
         }
 
         private void OnChatAssistCommand(Client client, string command, string[] args)
@@ -167,8 +184,7 @@ namespace ChatAssist
                     default:
                         client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "Unrecognized command: " + args[0]));
                         client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "Usage:"));
-                        client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "'/chatassist on' - enable chatassist"));
-                        client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "'/chatassist off' - disable chatassist"));
+                        client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "'/chatassist [On:Off]' - turn chatassist On/Off"));
                         client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "'/chatassist settings' - open settings"));
                         client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "'/chatassist add [message]' - add the give string to the spam filter"));
                         client.SendToClient(PluginUtils.CreateOryxNotification("ChatAssist", "'/chatassist remove [message]' - remove the give string from the spam filter"));
@@ -234,8 +250,22 @@ namespace ChatAssist
                             PlayerTextPacket playerText = (PlayerTextPacket)Packet.Create(PacketType.PLAYERTEXT);
                             playerText.Text = NPCResponseList[i, 1];
                             client.SendToServer(playerText);
+                        }
+                    }
 
-                            return;
+                    // Lair of Draconis
+                    if (text.Text == "Choose the Dragon Soul you wish to commune with!")
+                    {
+                        for (int i = 0; i < dragons.Length; ++i)
+                        {
+                            if (dragons[i].alive)
+                            {
+                                PlayerTextPacket playerText = (PlayerTextPacket)Packet.Create(PacketType.PLAYERTEXT);
+                                playerText.Text = dragons[i].name;
+                                client.SendToServer(playerText);
+
+                                return;
+                            }
                         }
                     }
                 }
@@ -250,6 +280,21 @@ namespace ChatAssist
                 else if (text.Text == "You thrash His Lordship's castle, kill his brothers, and challenge us. Come, come if you dare.") { message = "Janus Spawned!"; }
                 else if (text.Text == "Sweet treasure awaits for powerful adventurers!") { message = "Crystal Spawned!"; }
                 else if (text.Text == "Me door is open. Come let me crush you!") { message = "Door Opened!"; }
+                else if (text.Name == "#Ghost of Skuld" && (text.Text.Contains("3 seconds") || text.Text.Contains("'READY'")))
+                {
+                    cemCurrentWave += 1;
+                    message = "Wave " + cemCurrentWave + "/5!";
+                    text.Text = "Wave " + cemCurrentWave + "/5!";
+                    text.CleanText = "Wave " + cemCurrentWave + "/5!";
+                }
+                else if (text.Name == "#Altar of Draconis")
+                {
+                    if (text.Text.Contains("Feargus")) { dragons[0].alive = false; } // black
+                    else if (text.Text.Contains("Limoz")) { dragons[1].alive = false; } // green
+                    else if (text.Text == "Do not let the tranquil surroundings fool you!") { dragons[2].alive = false; } // blue
+                    else if (text.Text.Contains("Pyyr")) { dragons[3].alive = false; } // red
+                    return;
+                }
                 else if (text.Name.Contains("#Oryx"))
                 {
                     if (text.Text.Contains("Hermit_God")) { message = "Hermit God"; }
@@ -268,13 +313,26 @@ namespace ChatAssist
                     else if (text.Text.Contains("killed") || text.Text.Contains("death")) { message += " Died!"; }
                     else { return; }
                 }
-                else 
+                else
                 {
                     return;
                 }
 
-                client.SendToClient(PluginUtils.CreateNotification(client.ObjectId, message));
-                return;
+                if (Environment.TickCount - lastNotif > 1000)
+                {
+                    lastNotif = Environment.TickCount;
+                    client.SendToClient(PluginUtils.CreateNotification(client.ObjectId, message));
+                    return;
+                }
+                else
+                {
+                    PluginUtils.Delay(1000 - (Environment.TickCount - lastNotif), () =>
+                     {
+                         lastNotif = Environment.TickCount;
+                         client.SendToClient(PluginUtils.CreateNotification(client.ObjectId, message));
+                         return;
+                     });
+                }
             }
 
             if ((ChatAssistConfig.Default.DisableMessages && text.Recipient == "") ||
@@ -339,6 +397,23 @@ namespace ChatAssist
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter("ChatAssist.log", true))
                 {
                     file.WriteLine("<" + DateTime.Now.ToString() + ">: You: '" + playerTextPacket.Text + "'");
+                }
+            }
+        }
+
+        private void OnMapInfo(Client client, Packet packet)
+        {
+            MapInfoPacket mip = (MapInfoPacket)packet;
+
+            if (mip.Name.Contains("Haunted Cemetery"))
+            {
+                cemCurrentWave = 0;
+            }
+            else if (mip.Name == "Lair of Draconis")
+            {
+                for (int i = 0; i < dragons.Length; ++i)
+                {
+                    dragons[i].alive = true; // mark all dragons as alive
                 }
             }
         }
