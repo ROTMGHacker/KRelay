@@ -17,7 +17,7 @@ namespace FameNotifier
         private Dictionary<Client, int> _fame = new Dictionary<Client, int>();
 
         public string GetAuthor()
-        { return "KrazyShank / Kronks"; }
+        { return "KrazyShank / Kronks / RotMGHacker"; }
 
         public string GetName()
         { return "Fame Notifer"; }
@@ -30,21 +30,26 @@ namespace FameNotifier
 
         public void Initialize(Proxy proxy)
         {
-            proxy.HookPacket(PacketType.UPDATE, OnUpdate);
-            proxy.HookPacket(PacketType.NEWTICK, OnUpdate);
             proxy.ClientConnected += (client) => _fame.Add(client, -1);
             proxy.ClientDisconnected += (client) => _fame.Remove(client);
+
+            proxy.HookPacket(PacketType.UPDATE, OnUpdate);
+            proxy.HookPacket(PacketType.NEWTICK, OnUpdate);
         }
 
         private void OnUpdate(Client client, Packet packet)
         {
+            if (client.State.ACCID == null) { return; }
+
             int fame = _fame[client];
             _fame[client] = client.PlayerData.CharacterFame;
 
             if (fame != -1 && client.PlayerData.CharacterFame != fame)
+            {
                 client.SendToClient(
                     PluginUtils.CreateNotification(
                         client.ObjectId, "+" + (client.PlayerData.CharacterFame - fame) + " fame!"));
+            }
         }
     }
 }

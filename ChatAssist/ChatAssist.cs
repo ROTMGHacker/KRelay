@@ -21,7 +21,7 @@ namespace ChatAssist
 
     public class ChatAssist : IPlugin
     {
-        private string[] NPCIgnoreList = { "#Mystery Box Shop", "#The Alchemist", "#Login Seer", "#The Tinkerer", "#Bandit Leader", "#Drake Baby", "#Dwarf King", "#Killer Pillar", "#Haunted Armor", "#Red Demon", "#Cyclops God", "#Belladonna", "#Sumo Master", "#Avatar of the Forgotten King", "#Small Ghost", "#Medium Ghost", "#Large Ghost", "#Ghost Master", "#Ghost King", "#Lich", "#Haunted Spirit", "#Rock Construct", "#Phylactery Bearer", "#Mini Yeti", "#Big Yeti", "#Esben the Unwilling", "#Creepy Weird Dark Spirit Mirror Image Monster", "#Ent Ancient", "#Kage Kami", "#Twilight Archmage", "#The Forgotten Sentinel", "#The Cursed Crown", "#The Forgotten King", "#Titanum of Cruelty", "#Titanum of Despair", "#Titanum of Lies", "#Titanum of Hate", "#Grand Sphinx", "#Troll Matriarch", "#Dreadstump the Pirate King", "#Stone Mage", "#Deathmage", "#Horrid Reaper", "#Bes", "#Nut", "#Geb", "#Nikao the Azure Dragon", "#Limoz the Veridian Dragon", "#Pyyr the Crimson Dragon", "#Feargus the Obsidian Dragon", "#Nikao the Defiler", "#Limoz the Plague Bearer", "#Feargus the Demented", "#Pyyr the Wicked", "#Ivory Wyvern", "#Red Soul of Pyrr", "#Blue Soul of Nikao", "#Green Soul of Limoz", "#Black Soul of Feargus", "#Shaitan the Advisor", "#Left Hand of Shaitan", "#Right Hand of Shaitan", "#The Puppet Master", "#Trick in a Box", "#Davy Jones", "#Lord of the Lost Lands", "#Dr Terrible" };
+        private string[] NPCIgnoreList = { "#Mystery Box Shop", "#The Alchemist", "#Login Seer", "#The Tinkerer", "#Bandit Leader", "#Drake Baby", "#Dwarf King", "#Killer Pillar", "#Haunted Armor", "#Red Demon", "#Cyclops God", "#Belladonna", "#Sumo Master", "#Avatar of the Forgotten King", "#Small Ghost", "#Medium Ghost", "#Large Ghost", "#Ghost Master", "#Ghost King", "#Lich", "#Haunted Spirit", "#Rock Construct", "#Steel Construct", "#Wood Construct", "#Phylactery Bearer", "#Mini Yeti", "#Big Yeti", "#Esben the Unwilling", "#Creepy Weird Dark Spirit Mirror Image Monster", "#Ent Ancient", "#Kage Kami", "#Twilight Archmage", "#The Forgotten Sentinel", "#The Cursed Crown", "#The Forgotten King", "#Titanum of Cruelty", "#Titanum of Despair", "#Titanum of Lies", "#Titanum of Hate", "#Grand Sphinx", "#Troll Matriarch", "#Dreadstump the Pirate King", "#Stone Mage", "#Deathmage", "#Horrid Reaper", "#Bes", "#Nut", "#Geb", "#Nikao the Azure Dragon", "#Limoz the Veridian Dragon", "#Pyyr the Crimson Dragon", "#Feargus the Obsidian Dragon", "#Nikao the Defiler", "#Limoz the Plague Bearer", "#Feargus the Demented", "#Pyyr the Wicked", "#Ivory Wyvern", "#Red Soul of Pyrr", "#Blue Soul of Nikao", "#Green Soul of Limoz", "#Black Soul of Feargus", "#Shaitan the Advisor", "#Left Hand of Shaitan", "#Right Hand of Shaitan", "#The Puppet Master", "#Trick in a Box", "#Davy Jones", "#Lord of the Lost Lands", "#Dr Terrible" };
 
         private string[,] NPCResponseList = { { "What time is it?", "Its pizza time!" }, { "Where is the safest place in the world?", "Inside my shell." }, { "What is fast, quiet and hidden by the night?", "A ninja of course!" }, { "How do you like your pizza?", "Extra cheese, hold the anchovies." }, { "Who did this to me?", "Dr. Terrible, the mad scientist." }, { "Is King Alexander alive?", "He lives and reigns and conquers the world" }, { "Say, 'READY' when you are ready to face your opponents.", "ready" }, { "Prepare yourself... Say 'READY' when you wish the battle to begin!", "ready" }, { "Well, before I explain how this all works, let me tell you that you can always say SKIP and we'll just get on with it. Otherwise, just wait a sec while I get everything in order.", "skip" } };
 
@@ -315,6 +315,12 @@ namespace ChatAssist
                 }
                 else
                 {
+#if DEBUG
+                    if (text.Name != "")
+                    {
+                        PluginUtils.Log("ChatAssist", "Unknown Server Message: '" + text.Text + "' From: '" + text.Name + "'");
+                    }
+#endif // DEBUG
                     return;
                 }
 
