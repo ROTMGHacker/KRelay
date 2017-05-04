@@ -20,7 +20,7 @@ namespace IncFinder
         private Dictionary<int, string> _incHolders = new Dictionary<int, string>();
 
         public string GetAuthor()
-        { return "KrazyShank / Kronks"; }
+        { return "KrazyShank / Kronks / RotMGHacker"; }
 
         public string GetName()
         { return "Inc Finder"; }
@@ -34,17 +34,31 @@ namespace IncFinder
         public void Initialize(Proxy proxy)
         {
             proxy.ClientConnected += (client) => _incHolders.Clear();
+
             proxy.HookPacket(PacketType.UPDATE, OnUpdate);
+
             proxy.HookCommand("wc", OnWCCommand);
         }
 
         private void OnWCCommand(Client client, string command, string[] args)
         {
-            string message = "Inc Holders: ";
-            foreach (var pair in _incHolders)
-                message += pair.Value + ",";
+            if (_incHolders.Count == 0)
+            {
+                client.SendToClient(PluginUtils.CreateOryxNotification("Inc Finder", "No one has an Inc!"));
+            }
+            else
+            {
+                string message = "Inc Holders: ";
 
-            client.SendToClient(PluginUtils.CreateOryxNotification("Inc Finder", message));
+                foreach (var pair in _incHolders)
+                {
+                    message += pair.Value + ",";
+                }
+
+                message = message.Remove(message.Length - 1);
+
+                client.SendToClient(PluginUtils.CreateOryxNotification("Inc Finder", message));
+            }
         }
 
         private void OnUpdate(Client client, Packet packet)
