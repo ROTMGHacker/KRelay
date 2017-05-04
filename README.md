@@ -1,7 +1,7 @@
 # KRelay - Modified by RotMGHacker
-## KRelay 1.5.0 | RotMG 27.7.X13
+## KRelay 1.5.0 | RotMG 27.7.X13.1
 ### A modular Realm of the Mad God man-in-the-middle Proxy
-### Base on the original work of Toddddd
+### Based on the original work of Toddddd
 
 ![Screenshot](/Screenshot.png) ![Logo](/Icon.ico)
 -----------------------------------------------------------
