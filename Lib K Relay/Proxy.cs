@@ -64,7 +64,10 @@ namespace Lib_K_Relay
                 PluginUtils.Log("Listener", "Local listener started.");
             }, "ClientListenerStart");
 
-            if (!success) return;
+            if (!success)
+            {
+                return;
+            }
 
             PluginUtils.ProtectedInvoke(() =>
             {
@@ -78,7 +81,10 @@ namespace Lib_K_Relay
         /// </summary>
         public void Stop()
         {
-            if (_localListener == null) return;
+            if (_localListener == null)
+            {
+                return;
+            }
 
             PluginUtils.Log("Listener", "Stopping local listener...");
             _localListener.Stop();
@@ -143,13 +149,19 @@ namespace Lib_K_Relay
         public void HookPacket(PacketType type, PacketHandler callback)
         {
             if (GameData.GameData.Packets.ByName(type.ToString()).ID == 255)
+            {
                 throw new InvalidOperationException("[Plugin Error] A plugin attempted to register callback " +
                                                     callback.GetMethodInfo().ReflectedType + "." + callback.Method.Name +
                                                     " for packet type " + type + " that doesn't have a structure defined.");
+            }
             else if (_packetHooks.ContainsKey(callback))
+            {
                 _packetHooks[callback].Add(type);
+            }
             else
+            {
                 _packetHooks.Add(callback, new List<PacketType>() { type });
+            }
         }
 
         /// <summary>
@@ -160,9 +172,13 @@ namespace Lib_K_Relay
         public void HookPacket<T>(GenericPacketHandler<T> callback) where T : Packet
         {
             if (!_genericPacketHooks.ContainsKey(callback))
+            {
                 _genericPacketHooks.Add(callback, typeof(T));
+            }
             else
+            {
                 throw new InvalidOperationException("Callback already bound");
+            }
         }
 
         /// <summary>
@@ -173,11 +189,15 @@ namespace Lib_K_Relay
         public void HookCommand(string command, CommandHandler callback)
         {
             if (_commandHooks.ContainsKey(callback))
+            {
                 _commandHooks[callback].Add(command);
+            }
             else
-                _commandHooks.Add(callback, new List<string>() { command[0] == '/' 
-                    ? new string(command.Skip(1).ToArray()).ToLower() 
-                    : command.ToLower() } );
+            {
+                _commandHooks.Add(callback, new List<string>() { command[0] == '/'
+                    ? new string(command.Skip(1).ToArray()).ToLower()
+                    : command.ToLower() });
+            }
         }
         #endregion
 
@@ -216,15 +236,27 @@ namespace Lib_K_Relay
             PluginUtils.ProtectedInvoke(() =>
             {
                 // Fire general server packet callbacks
-                if (ServerPacketRecieved != null) ServerPacketRecieved(client, packet);
+                if (ServerPacketRecieved != null)
+                {
+                    ServerPacketRecieved(client, packet);
+                }
 
                 // Fire specific hook callbacks if applicable
                 foreach (var pair in _packetHooks)
-                    if (pair.Value.Contains(packet.Type)) pair.Key(client, packet);
+                {
+                    if (pair.Value.Contains(packet.Type))
+                    {
+                        pair.Key(client, packet);
+                    }
+                }
 
                 foreach (var pair in _genericPacketHooks)
+                {
                     if (pair.Value == packet.GetType())
+                    {
                         (pair.Key as Delegate).Method.Invoke((pair.Key as Delegate).Target, new object[2] { client, Convert.ChangeType(packet, pair.Value) });
+                    }
+                }
             }, "ServerPacket");
         }
 
@@ -240,34 +272,51 @@ namespace Lib_K_Relay
                 // Fire command callbacks
                 if (packet.Type == PacketType.PLAYERTEXT)
                 {
-                    PlayerTextPacket playerText = (PlayerTextPacket)packet;
-                    string text = playerText.Text.Replace("/", "").ToLower();
-                    string command = text.Contains(' ')
-                                     ? text.Split(' ')[0].ToLower()
-                                     : text;
-                    string[] args = text.Contains(' ')
-                                     ? text.Split(' ').Skip(1).ToArray()
-                                     : new string[0];
+                    PlayerTextPacket playerText = (PlayerTextPacket) packet;
 
-                    foreach (var pair in _commandHooks)
+                    if (playerText.Text[0] == '/')
                     {
-                        if (pair.Value.Contains(command))
+                        string text = playerText.Text.Replace("/", "").ToLower();
+                        string command = text.Contains(' ')
+                            ? text.Split(' ')[0].ToLower()
+                            : text;
+                        string[] args = text.Contains(' ')
+                            ? text.Split(' ').Skip(1).ToArray()
+                            : new string[0];
+
+                        foreach (var pair in _commandHooks)
                         {
-                            packet.Send = false;
-                            pair.Key(client, command, args);
+                            if (pair.Value.Contains(command))
+                            {
+                                packet.Send = false;
+                                pair.Key(client, command, args);
+                            }
                         }
                     }
                 }
 
                 // Fire general client packet callbacks
-                if (ClientPacketRecieved != null) ClientPacketRecieved(client, packet);
+                if (ClientPacketRecieved != null)
+                {
+                    ClientPacketRecieved(client, packet);
+                }
 
                 // Fire specific hook callbacks if applicable
                 foreach (var pair in _packetHooks)
-                    if (pair.Value.Contains(packet.Type)) pair.Key(client, packet);
+                {
+                    if (pair.Value.Contains(packet.Type))
+                    {
+                        pair.Key(client, packet);
+                    }
+                }
 
                 foreach (var pair in _genericPacketHooks)
-                    if (pair.Value == packet.GetType()) (pair.Key as Delegate).Method.Invoke((pair.Key as Delegate).Target, new object[2] { client, Convert.ChangeType(packet, pair.Value) });
+                {
+                    if (pair.Value == packet.GetType())
+                    {
+                        (pair.Key as Delegate).Method.Invoke((pair.Key as Delegate).Target, new object[2] { client, Convert.ChangeType(packet, pair.Value) });
+                    }
+                }
             }, "ClientPacket");
         }
 
