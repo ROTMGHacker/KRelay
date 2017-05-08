@@ -1,0 +1,11 @@
+root = true
+
+[*]
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = crlf
+
+[*.{cs}]
+charset = utf-8
+indent_style = space
+tab_width = 4
