@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ChatAssist
@@ -26,13 +19,15 @@ namespace ChatAssist
             UpDownPMFilter.Value = ChatAssistConfig.Default.StarFilterPM;
 
             foreach (string filter in ChatAssistConfig.Default.Blacklist)
+            {
                 tbxBlacklist.Text += filter.Trim() + "\n";
+            }
         }
 
         private void btnDone_Click(object sender, EventArgs e)
         {
             ChatAssistConfig.Default.Save();
-            this.Close();
+            Close();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -41,7 +36,7 @@ namespace ChatAssist
             {
                 ChatAssistConfig.Default.Reset();
                 ChatAssistConfig.Default.Save();
-                this.Close();
+                Close();
             }
         }
 
@@ -58,7 +53,7 @@ namespace ChatAssist
             ChatAssistConfig.Default.StarFilter = (int)UpDownStarFilter.Value;
             ChatAssistConfig.Default.StarFilterPM = (int)UpDownPMFilter.Value;
             ChatAssistConfig.Default.Blacklist.AddRange(tbxBlacklist.Text.Split(
-                new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
+                new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries));
             ChatAssistConfig.Default.Save();
         }
     }

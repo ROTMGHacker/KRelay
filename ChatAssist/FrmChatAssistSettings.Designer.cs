@@ -1,11 +1,14 @@
-﻿namespace ChatAssist
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace ChatAssist
 {
     partial class FrmChatAssistSettings
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -270,23 +273,23 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuSettings;
-        private System.Windows.Forms.ToolStripMenuItem btnDone;
-        private System.Windows.Forms.ToolStripMenuItem btnReset;
-        private System.Windows.Forms.CheckBox chkSpamFilter;
-        private System.Windows.Forms.RichTextBox tbxBlacklist;
-        private System.Windows.Forms.Label lblInfo;
-        private System.Windows.Forms.GroupBox groupOptions;
-        private System.Windows.Forms.CheckBox chkDisableAllMessages;
-        private System.Windows.Forms.CheckBox chkChangeMessageToFiltered;
-        private System.Windows.Forms.CheckBox chkAutoIgnore;
-        private System.Windows.Forms.CheckBox chkAutoIgnorePMs;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox chkFilterNPCText;
-        private System.Windows.Forms.CheckBox chkLogChat;
-        private System.Windows.Forms.NumericUpDown UpDownStarFilter;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown UpDownPMFilter;
+        private MenuStrip menuSettings;
+        private ToolStripMenuItem btnDone;
+        private ToolStripMenuItem btnReset;
+        private CheckBox chkSpamFilter;
+        private RichTextBox tbxBlacklist;
+        private Label lblInfo;
+        private GroupBox groupOptions;
+        private CheckBox chkDisableAllMessages;
+        private CheckBox chkChangeMessageToFiltered;
+        private CheckBox chkAutoIgnore;
+        private CheckBox chkAutoIgnorePMs;
+        private Label label1;
+        private CheckBox chkFilterNPCText;
+        private CheckBox chkLogChat;
+        private NumericUpDown UpDownStarFilter;
+        private Label label2;
+        private Label label3;
+        private NumericUpDown UpDownPMFilter;
     }
 }

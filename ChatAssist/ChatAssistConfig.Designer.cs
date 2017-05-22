@@ -8,14 +8,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
 namespace ChatAssist {
     
     
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
-    internal sealed partial class ChatAssistConfig : global::System.Configuration.ApplicationSettingsBase {
+    [CompilerGenerated()]
+    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
+    internal sealed partial class ChatAssistConfig : ApplicationSettingsBase {
         
-        private static ChatAssistConfig defaultInstance = ((ChatAssistConfig)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new ChatAssistConfig())));
+        private static ChatAssistConfig defaultInstance = ((ChatAssistConfig)(Synchronized(new ChatAssistConfig())));
         
         public static ChatAssistConfig Default {
             get {
@@ -23,9 +29,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool Enabled {
             get {
                 return ((bool)(this["Enabled"]));
@@ -35,9 +41,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("False")]
         public bool AutoIgnoreSpamPM {
             get {
                 return ((bool)(this["AutoIgnoreSpamPM"]));
@@ -47,9 +53,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("False")]
         public bool AutoIgnoreSpamMessage {
             get {
                 return ((bool)(this["AutoIgnoreSpamMessage"]));
@@ -59,9 +65,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("False")]
         public bool CensorSpamMessages {
             get {
                 return ((bool)(this["CensorSpamMessages"]));
@@ -71,9 +77,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("False")]
         public bool DisableMessages {
             get {
                 return ((bool)(this["DisableMessages"]));
@@ -83,9 +89,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool EnableNPCFilter {
             get {
                 return ((bool)(this["EnableNPCFilter"]));
@@ -95,9 +101,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool EnableSpamFilter {
             get {
                 return ((bool)(this["EnableSpamFilter"]));
@@ -107,9 +113,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("0")]
         public int StarFilter {
             get {
                 return ((int)(this["StarFilter"]));
@@ -119,9 +125,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("0")]
         public int StarFilterPM {
             get {
                 return ((int)(this["StarFilterPM"]));
@@ -131,9 +137,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("False")]
         public bool LogChat {
             get {
                 return ((bool)(this["LogChat"]));
@@ -143,9 +149,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool AutoResponse {
             get {
                 return ((bool)(this["AutoResponse"]));
@@ -155,9 +161,9 @@ namespace ChatAssist {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>LIFEPOT. ORG</string>
   <string>RealmStock</string>
@@ -167,9 +173,9 @@ namespace ChatAssist {
   <string>Rea!mKings</string>
   <string>Realm$aver</string>
 </ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection Blacklist {
+        public StringCollection Blacklist {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["Blacklist"]));
+                return ((StringCollection)(this["Blacklist"]));
             }
             set {
                 this["Blacklist"] = value;
