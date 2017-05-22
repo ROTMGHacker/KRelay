@@ -39,7 +39,7 @@ namespace Lib_K_Relay.Networking
                 value = Activator.CreateInstance(type);
                 States.Add(stateName, value);
             }
-            return (T)value;
+            return (T) value;
         }
 
         public dynamic this[string stateName]

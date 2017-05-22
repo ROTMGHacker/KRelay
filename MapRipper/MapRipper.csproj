@@ -63,7 +63,7 @@
       <DependentUpon>HandleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="JsonMap.cs" />
-    <Compile Include="Plugin.cs" />
+    <Compile Include="MapRipper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

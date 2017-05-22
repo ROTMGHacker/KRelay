@@ -1,90 +1,89 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
 using Lib_K_Relay;
-using Lib_K_Relay.GameData;
 using Lib_K_Relay.Interface;
 using Lib_K_Relay.Networking;
 using Lib_K_Relay.Networking.Packets;
-using Lib_K_Relay.Networking.Packets.Client;
 using Lib_K_Relay.Networking.Packets.Server;
-using Lib_K_Relay.Networking.Packets.DataObjects;
 using Lib_K_Relay.Utilities;
 
 namespace AntiLag
 {
     public class AntiLag : IPlugin
     {
-        public Dictionary<Client, bool> allEffects = new Dictionary<Client, bool>();
+        public Dictionary<Client, bool> AllEffects = new Dictionary<Client, bool>();
 
-		public string GetAuthor()
-		{ return "059 (updated by Todddddd)"; }
+        public string GetAuthor()
+        { return "059 (updated by Todddddd)"; }
 
-		public string GetName()
-		{ return "AntiLag"; }
+        public string GetName()
+        { return "AntiLag"; }
 
-		public string GetDescription()
-		{ return "Blocks certain packets which contribute significantly to lagging your client."; }
+        public string GetDescription()
+        { return "Blocks certain packets which contribute significantly to lagging your client."; }
 
-		public string[] GetCommands()
-		{ return new string[] { "/antilag", "/antilag effects all" }; }
+        public string[] GetCommands()
+        { return new[] { "/antilag", "/antilag effects all" }; }
 
-		public void Initialize(Proxy proxy)
-		{
-            proxy.ClientConnected += (c) => allEffects.Add(c, false);
-            proxy.ClientDisconnected += (c) => allEffects.Remove(c);
+        public void Initialize(Proxy proxy)
+        {
+            proxy.ClientConnected += c => AllEffects.Add(c, false);
+            proxy.ClientDisconnected += c => AllEffects.Remove(c);
 
-			proxy.HookCommand("antilag", OnCommand);
-			proxy.HookPacket(PacketType.SHOWEFFECT, OnShowEffect);
-			proxy.HookPacket(PacketType.ALLYSHOOT, OnAllyShoot);
-			proxy.HookPacket(PacketType.DAMAGE, OnDamage);
+            proxy.HookPacket(PacketType.SHOWEFFECT, OnShowEffect);
+            proxy.HookPacket(PacketType.ALLYSHOOT, OnAllyShoot);
+            proxy.HookPacket(PacketType.DAMAGE, OnDamage);
             proxy.HookPacket(PacketType.SERVERPLAYERSHOOT, OnServerPlayerShoot);
-		}
+
+            proxy.HookCommand("antilag", OnCommand);
+        }
 
         public void OnServerPlayerShoot(Client client, Packet packet)
         {
-            ServerPlayerShootPacket sps = (ServerPlayerShootPacket)packet;
-            if (AntiLagConfig.Default.Other)
-                if (sps.OwnerId != client.ObjectId)
-                    packet.Send = false;
+            ServerPlayerShootPacket sps = (ServerPlayerShootPacket) packet;
+            if (AntiLagConfig.Default.Other && sps.OwnerId != client.ObjectId)
+            {
+                packet.Send = false;
+            }
         }
 
-		private void OnCommand(Client client, string command, string[] args)
-		{
+        // TODO: Change to switch
+        private void OnCommand(Client client, string command, string[] args)
+        {
             if (args.Length == 0 || args[0] == "settings" || args[0] == "config")
+            {
                 PluginUtils.ShowGenericSettingsGUI(AntiLagConfig.Default, "AntiLag Settings");
+            }
             else
             {
                 if (args[0] == "effects" && args[1] == "all")
                 {
-                    allEffects[client] = !allEffects[client];
-                    client.SendToClient(PluginUtils.CreateNotification(client.ObjectId, "AntiLag ALL Particles " + allEffects[client]));
+                    AllEffects[client] = !AllEffects[client];
+                    client.SendToClient(PluginUtils.CreateNotification(client.ObjectId, "AntiLag ALL Particles " + AllEffects[client]));
                 }
             }
-		}
+        }
 
-
-		private void OnShowEffect(Client client, Packet packet)
-		{
-			if (AntiLagConfig.Default.Effects)
-			{
-				ShowEffectPacket sep = (ShowEffectPacket)packet;
-                if (allEffects[client])
+        private void OnShowEffect(Client client, Packet packet)
+        {
+            if (AntiLagConfig.Default.Effects)
+            {
+                ShowEffectPacket sep = (ShowEffectPacket) packet;
+                if (AllEffects[client])
                 {
-                    if (sep.EffectType == EffectType.Nova)
+                    // TODO: Check logic this is always going to be true?
+
+                    if (sep.EffectType == EffectType.Nova && sep.TargetId != client.ObjectId)
                     {
-                        if (sep.TargetId != client.ObjectId)
-                            packet.Send = false;
+                        packet.Send = false;
                     }
                     else
+                    {
                         packet.Send = false;
+                    }
                 }
                 else
                 {
-                    switch ((int)sep.EffectType - 1)
+                    switch ((int) sep.EffectType - 1)
                     {
                         case 0:
                         case 1:
@@ -101,27 +100,34 @@ namespace AntiLag
                             break;
                         case 4:
                             if (sep.TargetId != client.ObjectId)
+                            {
                                 packet.Send = false;
+                            }
+
                             break;
                     }
                 }
-			}
-		}
+            }
+        }
 
-		private void OnAllyShoot(Client client, Packet packet)
-		{
-			if (AntiLagConfig.Default.Ally)
-				packet.Send = false;
-		}
+        private static void OnAllyShoot(Client client, Packet packet)
+        {
+            if (AntiLagConfig.Default.Ally)
+            {
+                packet.Send = false;
+            }
+        }
 
-		private void OnDamage(Client client, Packet packet)
-		{
+        private static void OnDamage(Client client, Packet packet)
+        {
             if (AntiLagConfig.Default.Damage)
-			{
-				DamagePacket dp = (DamagePacket)packet;
-				if (dp.ObjectId != client.ObjectId)
-					packet.Send = false;
-			}
-		}
-	}
+            {
+                DamagePacket dp = (DamagePacket) packet;
+                if (dp.ObjectId != client.ObjectId)
+                {
+                    packet.Send = false;
+                }
+            }
+        }
+    }
 }

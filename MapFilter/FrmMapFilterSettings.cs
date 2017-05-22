@@ -1,36 +1,36 @@
-﻿using Lib_K_Relay.GameData;
-using Lib_K_Relay.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lib_K_Relay.GameData;
 
 namespace MapFilter
 {
     public partial class FrmMapFilterSettings : Form
     {
-        MapFilter _m;
+        private readonly MapFilter _m;
 
         public FrmMapFilterSettings(MapFilter m)
         {
             _m = m;
             InitializeComponent();
             foreach (string filter in MapFilterConfig.Default.TileFilters)
+            {
                 listTileFilters.Items.Add(filter);
+            }
+
             foreach (string filter in MapFilterConfig.Default.ObjectFilters)
+            {
                 listObjectFilters.Items.Add(filter);
+            }
+
             chkEnabled.Checked = MapFilterConfig.Default.Enabled;
         }
 
         private void btnDone_Click(object sender, EventArgs e)
         {
             MapFilterConfig.Default.Save();
-            this.Close();
+            Close();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace MapFilter
             {
                 MapFilterConfig.Default.Reset();
                 MapFilterConfig.Default.Save();
-                this.Close();
+                Close();
             }
         }
 
@@ -62,8 +62,8 @@ namespace MapFilter
                     }
                 });
 
-            new FrmEnumerator(dict, "Choose the tile to replace...", (s) => tile = s).ShowDialog();
-            new FrmEnumerator(dict, "Choose the replacement tile...", (s) => replacement = s).ShowDialog();
+            new FrmEnumerator(dict, "Choose the tile to replace...", s => tile = s).ShowDialog();
+            new FrmEnumerator(dict, "Choose the replacement tile...", s => replacement = s).ShowDialog();
 
             if (tile != "" && replacement != "")
             {
@@ -76,7 +76,11 @@ namespace MapFilter
 
         private void btnRemoveTile_Click(object sender, EventArgs e)
         {
-            if (listTileFilters.SelectedItem == null) return;
+            if (listTileFilters.SelectedItem == null)
+            {
+                return;
+            }
+
             MapFilterConfig.Default.TileFilters.Remove(listTileFilters.SelectedItem.ToString());
             listTileFilters.Items.Remove(listTileFilters.SelectedItem);
         }
@@ -85,9 +89,9 @@ namespace MapFilter
         {
             string obj = "";
             string replacement = "";
-			var dict = GameData.Objects.Map.ToDictionary(o => o.Value.Name, o => o.Key);
-			new FrmEnumerator(dict, "Choose the object to replace...", (s) => obj = s).ShowDialog();
-            new FrmEnumerator(dict, "Choose the replacement object...", (s) => replacement = s).ShowDialog();
+			Dictionary<string, ushort> dict = GameData.Objects.Map.ToDictionary(o => o.Value.Name, o => o.Key);
+			new FrmEnumerator(dict, "Choose the object to replace...", s => obj = s).ShowDialog();
+            new FrmEnumerator(dict, "Choose the replacement object...", s => replacement = s).ShowDialog();
 
             if (obj != "" && replacement != "")
             {
@@ -99,7 +103,11 @@ namespace MapFilter
 
         private void btnRemoveObject_Click(object sender, EventArgs e)
         {
-            if (listObjectFilters.SelectedItem == null) return;
+            if (listObjectFilters.SelectedItem == null)
+            {
+                return;
+            }
+
             MapFilterConfig.Default.ObjectFilters.Remove(listObjectFilters.SelectedItem.ToString());
             listObjectFilters.Items.Remove(listObjectFilters.SelectedItem);
         }
@@ -112,7 +120,7 @@ namespace MapFilter
         private void doneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MapFilterConfig.Default.Save();
-            this.Close();
+            Close();
         }
 
         private void resetToDefaultToolStripMenuItem_Click(object sender, EventArgs e)
@@ -121,7 +129,7 @@ namespace MapFilter
             {
                 MapFilterConfig.Default.Reset();
                 MapFilterConfig.Default.Save();
-                this.Close();
+                Close();
             }
         }
     }

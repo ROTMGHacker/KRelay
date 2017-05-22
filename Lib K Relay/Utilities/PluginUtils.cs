@@ -41,7 +41,10 @@ namespace Lib_K_Relay.Utilities
             catch (Exception e)
             {
                 if (e.GetType() != filteredException)
+                {
                     LogPluginException(e, errorProvider);
+                }
+
                 return false;
             }
         }
@@ -73,7 +76,11 @@ namespace Lib_K_Relay.Utilities
         /// <param name="message">Message to be logged</param>
         public static void Log(string sender, string message)
         {
-            if (sender.Length > 13) sender = sender.Substring(0, 13);
+            if (sender.Length > 13)
+            {
+                sender = sender.Substring(0, 13);
+            }
+
             sender += "]";
             Console.WriteLine(string.Format("[{0,-15} {1}", sender, message));
         }
@@ -151,7 +158,7 @@ namespace Lib_K_Relay.Utilities
         /// <returns></returns>
         public static NotificationPacket CreateNotification(int objectId, int color, string message)
         {
-            NotificationPacket notif = (NotificationPacket)Packet.Create(PacketType.NOTIFICATION);
+            NotificationPacket notif = (NotificationPacket) Packet.Create(PacketType.NOTIFICATION);
             notif.ObjectId = objectId;
             notif.Message = "{\"key\":\"blank\",\"tokens\":{\"data\":\"" + message + "\"}}";
             notif.Color = color;
@@ -166,7 +173,7 @@ namespace Lib_K_Relay.Utilities
         /// <returns></returns>
         public static TextPacket CreateOryxNotification(string sender, string message)
         {
-            TextPacket tpacket = (TextPacket)Packet.Create(PacketType.TEXT);
+            TextPacket tpacket = (TextPacket) Packet.Create(PacketType.TEXT);
             tpacket.BubbleTime = 0;
             tpacket.CleanText = message;
             tpacket.Name = "#" + sender;

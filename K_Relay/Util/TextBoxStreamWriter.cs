@@ -25,9 +25,13 @@ namespace K_Relay.Util
             if (value == '\n' || value == '\r')
             {
                 if (_output.IsHandleCreated)
+                {
                     _output.Invoke(new MethodInvoker(() => _output.AppendText(_buffer.ToString())));
+                }
                 else if (!_output.InvokeRequired)
+                {
                     _output.AppendText(_buffer.ToString());
+                }
 
                 _buffer = new StringBuilder();
             }
@@ -58,9 +62,13 @@ namespace K_Relay.Util
             if (value == '\n' || value == '\r')
             {
                 if (_output.IsHandleCreated)
+                {
                     _output.Invoke(new MethodInvoker(() => _output.AppendText(_buffer.ToString())));
+                }
                 else if (!_output.InvokeRequired)
+                {
                     _output.AppendText(_buffer.ToString());
+                }
 
                 _buffer = new StringBuilder();
             }

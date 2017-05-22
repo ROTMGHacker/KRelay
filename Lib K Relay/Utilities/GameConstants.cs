@@ -82,7 +82,7 @@ namespace Lib_K_Relay.Utilities
 
     public enum EffectType
     {
-		Unknown = 0,
+        Unknown = 0,
         Heal = 1,
         Teleport = 2,
         Stream = 3,
@@ -113,10 +113,10 @@ namespace Lib_K_Relay.Utilities
 
         public ARGB(uint argb)
         {
-            A = (byte)((argb & 0xff000000) >> 24);
-            R = (byte)((argb & 0x00ff0000) >> 16);
-            G = (byte)((argb & 0x0000ff00) >> 8);
-            B = (byte)((argb & 0x000000ff) >> 0);
+            A = (byte) ((argb & 0xff000000) >> 24);
+            R = (byte) ((argb & 0x00ff0000) >> 16);
+            G = (byte) ((argb & 0x0000ff00) >> 8);
+            B = (byte) ((argb & 0x000000ff) >> 0);
         }
 
         public ARGB(byte a, byte r, byte g, byte b)

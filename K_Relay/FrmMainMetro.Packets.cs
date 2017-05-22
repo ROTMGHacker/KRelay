@@ -22,7 +22,9 @@ namespace K_Relay
             Invoke((MethodInvoker)delegate
             {
                 foreach (PacketType type in Enum.GetValues(typeof(PacketType)).Cast<PacketType>())
+                {
                     listPackets.ListBox.Items.Insert(0, type.ToString());
+                }
             });
         }
         

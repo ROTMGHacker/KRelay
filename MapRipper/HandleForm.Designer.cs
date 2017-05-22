@@ -1,11 +1,15 @@
-﻿namespace MapRipper
+﻿using System.ComponentModel;
+using MetroFramework.Components;
+using MetroFramework.Controls;
+
+namespace MapRipper
 {
     partial class HandleForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -166,16 +170,16 @@
 
         #endregion
 
-        private MetroFramework.Controls.MetroTile metroTile1;
-        private MetroFramework.Controls.MetroButton saveMapButton;
-        private MetroFramework.Controls.MetroPanel metroPanel1;
-        private MetroFramework.Controls.MetroLabel heightLabel;
-        private MetroFramework.Controls.MetroLabel widthLabel;
-        private MetroFramework.Controls.MetroLabel metroLabel4;
-        private MetroFramework.Controls.MetroComboBox clrStyle;
-        private MetroFramework.Controls.MetroLabel metroLabel3;
-        private MetroFramework.Controls.MetroComboBox clrTheme;
-        private MetroFramework.Components.MetroToolTip metroToolTip1;
+        private MetroTile metroTile1;
+        private MetroButton saveMapButton;
+        private MetroPanel metroPanel1;
+        private MetroLabel heightLabel;
+        private MetroLabel widthLabel;
+        private MetroLabel metroLabel4;
+        private MetroComboBox clrStyle;
+        private MetroLabel metroLabel3;
+        private MetroComboBox clrTheme;
+        private MetroToolTip metroToolTip1;
 
     }
 }

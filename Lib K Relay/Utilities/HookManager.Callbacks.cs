@@ -91,7 +91,7 @@ namespace Lib_K_Relay.Utilities
             if (nCode >= 0)
             {
                 //Marshall the data from callback.
-                MouseLLHookStruct mouseHookStruct = (MouseLLHookStruct)Marshal.PtrToStructure(lParam, typeof(MouseLLHookStruct));
+                MouseLLHookStruct mouseHookStruct = (MouseLLHookStruct) Marshal.PtrToStructure(lParam, typeof(MouseLLHookStruct));
 
                 //detect button clicked
                 MouseButtons button = MouseButtons.None;
@@ -112,7 +112,7 @@ namespace Lib_K_Relay.Utilities
                         button = MouseButtons.Left;
                         clickCount = 1;
                         break;
-                    case WM_LBUTTONDBLCLK: 
+                    case WM_LBUTTONDBLCLK:
                         button = MouseButtons.Left;
                         clickCount = 2;
                         break;
@@ -126,7 +126,7 @@ namespace Lib_K_Relay.Utilities
                         button = MouseButtons.Right;
                         clickCount = 1;
                         break;
-                    case WM_RBUTTONDBLCLK: 
+                    case WM_RBUTTONDBLCLK:
                         button = MouseButtons.Right;
                         clickCount = 2;
                         break;
@@ -134,9 +134,9 @@ namespace Lib_K_Relay.Utilities
                         //If the message is WM_MOUSEWHEEL, the high-order word of MouseData member is the wheel delta. 
                         //One wheel click is defined as WHEEL_DELTA, which is 120. 
                         //(value >> 16) & 0xffff; retrieves the high-order word from the given 32-bit value
-                        mouseDelta = (short)((mouseHookStruct.MouseData >> 16) & 0xffff);
-                       
-                    //TODO: X BUTTONS (I havent them so was unable to test)
+                        mouseDelta = (short) ((mouseHookStruct.MouseData >> 16) & 0xffff);
+
+                        //TODO: X BUTTONS (I havent them so was unable to test)
                         //If the message is WM_XBUTTONDOWN, WM_XBUTTONUP, WM_XBUTTONDBLCLK, WM_NCXBUTTONDOWN, WM_NCXBUTTONUP, 
                         //or WM_NCXBUTTONDBLCLK, the high-order word specifies which X button was pressed or released, 
                         //and the low-order word is reserved. This value can be one or more of the following values. 
@@ -153,7 +153,7 @@ namespace Lib_K_Relay.Utilities
                                                    mouseDelta);
 
                 //Mouse up
-                if (s_MouseUp!=null && mouseUp)
+                if (s_MouseUp != null && mouseUp)
                 {
                     s_MouseUp.Invoke(null, e);
                 }
@@ -165,7 +165,7 @@ namespace Lib_K_Relay.Utilities
                 }
 
                 //If someone listens to click and a click is heppened
-                if (s_MouseClick != null && clickCount>0)
+                if (s_MouseClick != null && clickCount > 0)
                 {
                     s_MouseClick.Invoke(null, e);
                 }
@@ -183,13 +183,13 @@ namespace Lib_K_Relay.Utilities
                 }
 
                 //Wheel was moved
-                if (s_MouseWheel!=null && mouseDelta!=0)
+                if (s_MouseWheel != null && mouseDelta != 0)
                 {
                     s_MouseWheel.Invoke(null, e);
                 }
 
                 //If someone listens to move and there was a change in coordinates raise move event
-                if ((s_MouseMove!=null || s_MouseMoveExt!=null) && (m_OldX != mouseHookStruct.Point.X || m_OldY != mouseHookStruct.Point.Y))
+                if ((s_MouseMove != null || s_MouseMoveExt != null) && (m_OldX != mouseHookStruct.Point.X || m_OldY != mouseHookStruct.Point.Y))
                 {
                     m_OldX = mouseHookStruct.Point.X;
                     m_OldY = mouseHookStruct.Point.Y;
@@ -226,9 +226,9 @@ namespace Lib_K_Relay.Utilities
                     WH_MOUSE_LL,
                     s_MouseDelegate,
                     LoadLibrary("User32")
-                    /*
-                    Marshal.GetHINSTANCE(
-                        Assembly.GetExecutingAssembly().GetModules()[0])*/,
+                        /*
+                        Marshal.GetHINSTANCE(
+                            Assembly.GetExecutingAssembly().GetModules()[0])*/,
                     0);
                 //If SetWindowsHookEx fails.
                 if (s_MouseHookHandle == 0)
@@ -278,7 +278,7 @@ namespace Lib_K_Relay.Utilities
                 }
             }
         }
-        
+
         #endregion
 
         //##############################################################################
@@ -329,11 +329,11 @@ namespace Lib_K_Relay.Utilities
             if (nCode >= 0)
             {
                 //read structure KeyboardHookStruct at lParam
-                KeyboardHookStruct MyKeyboardHookStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
+                KeyboardHookStruct MyKeyboardHookStruct = (KeyboardHookStruct) Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
                 //raise KeyDown
                 if (s_KeyDown != null && (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN))
                 {
-                    Keys keyData = (Keys)MyKeyboardHookStruct.VirtualKeyCode;
+                    Keys keyData = (Keys) MyKeyboardHookStruct.VirtualKeyCode;
                     KeyEventArgs e = new KeyEventArgs(keyData);
                     s_KeyDown.Invoke(null, e);
                     handled = e.Handled;
@@ -354,8 +354,12 @@ namespace Lib_K_Relay.Utilities
                               inBuffer,
                               MyKeyboardHookStruct.Flags) == 1)
                     {
-                        char key = (char)inBuffer[0];
-                        if ((isDownCapslock ^ isDownShift) && Char.IsLetter(key)) key = Char.ToUpper(key);
+                        char key = (char) inBuffer[0];
+                        if ((isDownCapslock ^ isDownShift) && Char.IsLetter(key))
+                        {
+                            key = Char.ToUpper(key);
+                        }
+
                         KeyPressEventArgs e = new KeyPressEventArgs(key);
                         s_KeyPress.Invoke(null, e);
                         handled = handled || e.Handled;
@@ -365,7 +369,7 @@ namespace Lib_K_Relay.Utilities
                 // raise KeyUp
                 if (s_KeyUp != null && (wParam == WM_KEYUP || wParam == WM_SYSKEYUP))
                 {
-                    Keys keyData = (Keys)MyKeyboardHookStruct.VirtualKeyCode;
+                    Keys keyData = (Keys) MyKeyboardHookStruct.VirtualKeyCode;
                     KeyEventArgs e = new KeyEventArgs(keyData);
                     s_KeyUp.Invoke(null, e);
                     handled = handled || e.Handled;
@@ -375,7 +379,9 @@ namespace Lib_K_Relay.Utilities
 
             //if event handled in application do not handoff to other listeners
             if (handled)
+            {
                 return -1;
+            }
 
             //forward to other application
             return CallNextHookEx(s_KeyboardHookHandle, nCode, wParam, lParam);
@@ -393,8 +399,8 @@ namespace Lib_K_Relay.Utilities
                     WH_KEYBOARD_LL,
                     s_KeyboardDelegate,
                     LoadLibrary("User32")
-                    /*Marshal.GetHINSTANCE(
-                        Assembly.GetExecutingAssembly().GetModules()[0])*/,
+                        /*Marshal.GetHINSTANCE(
+                            Assembly.GetExecutingAssembly().GetModules()[0])*/,
                     0);
                 //If SetWindowsHookEx fails.
                 if (s_KeyboardHookHandle == 0)

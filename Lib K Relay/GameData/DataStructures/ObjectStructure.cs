@@ -15,7 +15,8 @@ namespace Lib_K_Relay.GameData.DataStructures
 
             doc.Element("Objects")
                 .Elements("Object")
-                .ForEach(obj => {
+                .ForEach(obj =>
+                {
                     ObjectStructure o = new ObjectStructure(obj);
                     map[o.ID] = o;
                 });
@@ -118,17 +119,17 @@ namespace Lib_K_Relay.GameData.DataStructures
         /// </summary>
         public string Name { get; private set; }
 
-		// My Custom Variables
-		public string DungeonName { get; private set; }
+        // My Custom Variables
+        public string DungeonName { get; private set; }
 
         public ObjectStructure(XElement obj)
         {
-            ID = (ushort)obj.AttrDefault("type", "0x0").ParseHex();
+            ID = (ushort) obj.AttrDefault("type", "0x0").ParseHex();
 
             // if this errors you need to add a new entry to the krObject.Class enum
             ObjectClass = obj.ElemDefault("Class", "GameObject");
 
-            MaxHP = (ushort)obj.ElemDefault("MaxHitPoints", "0").ParseHex();
+            MaxHP = (ushort) obj.ElemDefault("MaxHitPoints", "0").ParseHex();
             XPMult = obj.ElemDefault("XpMult", "0").ParseFloat();
 
             Static = obj.HasElement("Static");
@@ -140,9 +141,9 @@ namespace Lib_K_Relay.GameData.DataStructures
             Player = obj.HasElement("Player");
             DrawOnGround = obj.HasElement("DrawOnGround");
 
-            Size = (ushort)obj.ElemDefault("Size", "0").ParseInt();
-            ShadowSize = (ushort)obj.ElemDefault("ShadowSize", "0").ParseInt();
-            Defense = (ushort)obj.ElemDefault("Defense", "0").ParseInt();
+            Size = (ushort) obj.ElemDefault("Size", "0").ParseInt();
+            ShadowSize = (ushort) obj.ElemDefault("ShadowSize", "0").ParseInt();
+            Defense = (ushort) obj.ElemDefault("Defense", "0").ParseInt();
             Flying = obj.HasElement("Flying");
             God = obj.HasElement("God");
 
@@ -152,8 +153,8 @@ namespace Lib_K_Relay.GameData.DataStructures
 
             Name = obj.AttrDefault("id", "");
 
-			// My Custom Values
-			DungeonName = obj.ElemDefault("DungeonName", "DungeonName").ToLower();
+            // My Custom Values
+            DungeonName = obj.ElemDefault("DungeonName", "DungeonName").ToLower();
         }
 
         public override string ToString()

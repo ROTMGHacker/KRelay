@@ -19,7 +19,10 @@ namespace Lib_K_Relay.Networking.Packets.Server
             AccountListId = r.ReadInt32();
             AccountIds = new string[r.ReadUInt16()];
             for (int i = 0; i < AccountIds.Length; i++)
+            {
                 AccountIds[i] = r.ReadString();
+            }
+
             LockAction = r.ReadInt32();
 
         }
@@ -29,7 +32,10 @@ namespace Lib_K_Relay.Networking.Packets.Server
             w.Write(AccountListId);
             w.Write((ushort)AccountIds.Length);
             foreach (string i in AccountIds)
+            {
                 w.Write(i);
+            }
+
             w.Write(LockAction);
         }
     }

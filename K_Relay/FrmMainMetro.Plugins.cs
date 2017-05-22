@@ -37,7 +37,11 @@ namespace K_Relay
 
             foreach (string pPath in Directory.GetFiles(pDir, "*.dll", SearchOption.AllDirectories))
             {
-                if (new FileInfo(pPath).Name.Contains("Lib K Relay")) continue;
+                if (new FileInfo(pPath).Name.Contains("Lib K Relay"))
+                {
+                    continue;
+                }
+
                 Assembly pAssembly = Assembly.LoadFrom(pPath);
 
                 foreach (Type pType in pAssembly.GetTypes())
@@ -49,7 +53,9 @@ namespace K_Relay
                             Type tInterface = pType.GetInterface("Lib_K_Relay.Interface.IPlugin");
 
                             if (tInterface != null)
+                            {
                                 AttachPlugin(pType);
+                            }
                         }
                         catch (Exception e)
                         {
@@ -125,7 +131,9 @@ namespace K_Relay
             {
                 tbxPluginInfo.AppendText("\n\nCommands:", Color.DodgerBlue, true);
                 foreach (string command in commands)
+                {
                     tbxPluginInfo.AppendText("\n  " + command, Color.Empty, false);
+                }
             }
         }
     }

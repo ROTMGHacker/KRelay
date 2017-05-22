@@ -8,14 +8,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.Configuration;
+using System.Diagnostics;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+
 namespace LootHelper {
     
     
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class LootHelperConfig : global::System.Configuration.ApplicationSettingsBase {
+    [CompilerGenerated()]
+    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
+    internal sealed partial class LootHelperConfig : ApplicationSettingsBase {
         
-        private static LootHelperConfig defaultInstance = ((LootHelperConfig)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new LootHelperConfig())));
+        private static LootHelperConfig defaultInstance = ((LootHelperConfig)(Synchronized(new LootHelperConfig())));
         
         public static LootHelperConfig Default {
             get {
@@ -23,9 +29,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool LootNotifications {
             get {
                 return ((bool)(this["LootNotifications"]));
@@ -35,9 +41,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool AutoLoot {
             get {
                 return ((bool)(this["AutoLoot"]));
@@ -47,9 +53,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Health Potion, Magic Potion, Potion of Life, Potion of Mana, Potion of Dexterity," +
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("Health Potion, Magic Potion, Potion of Life, Potion of Mana, Potion of Dexterity," +
             " Potion of Vitality, Potion of Defense, Potion of Speed, Potion of Wisdom, Potio" +
             "n of Attack")]
         public string AutoLootList {
@@ -61,9 +67,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool LootQuests {
             get {
                 return ((bool)(this["LootQuests"]));
@@ -73,21 +79,21 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Aqua")]
-        public global::System.Drawing.Color NotificationColor {
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("Aqua")]
+        public Color NotificationColor {
             get {
-                return ((global::System.Drawing.Color)(this["NotificationColor"]));
+                return ((Color)(this["NotificationColor"]));
             }
             set {
                 this["NotificationColor"] = value;
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Normal, Purple, Egg, Blue, Cyan, White, Red")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("Normal, Purple, Egg, Blue, Cyan, White, Red")]
         public string LootBags {
             get {
                 return ((string)(this["LootBags"]));
@@ -97,9 +103,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Blue, Cyan, White, Red")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("Blue, Cyan, White, Red")]
         public string NotifBags {
             get {
                 return ((string)(this["NotifBags"]));
@@ -109,9 +115,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("10")]
         public byte AutoLootWeaponTier {
             get {
                 return ((byte)(this["AutoLootWeaponTier"]));
@@ -121,9 +127,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("10")]
         public byte AutoLootArmorTier {
             get {
                 return ((byte)(this["AutoLootArmorTier"]));
@@ -133,9 +139,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("5")]
         public byte AutoLootAbilityTier {
             get {
                 return ((byte)(this["AutoLootAbilityTier"]));
@@ -145,9 +151,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("5")]
         public byte AutoLootRingTier {
             get {
                 return ((byte)(this["AutoLootRingTier"]));
@@ -157,9 +163,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("1")]
         public byte AutoLootEggTier {
             get {
                 return ((byte)(this["AutoLootEggTier"]));
@@ -169,9 +175,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Blue, Cyan, White")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("Blue, Cyan, White")]
         public string QuestBags {
             get {
                 return ((string)(this["QuestBags"]));
@@ -181,9 +187,9 @@ namespace LootHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("700")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("700")]
         public int LootSpeed {
             get {
                 return ((int)(this["LootSpeed"]));

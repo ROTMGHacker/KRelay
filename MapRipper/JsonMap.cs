@@ -19,19 +19,16 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using Newtonsoft.Json;
 using Ionic.Zlib;
-using System.Reflection;
-using Lib_K_Relay.Networking.Packets.DataObjects;
-using Lib_K_Relay.Utilities;
-using Lib_K_Relay.Networking.Packets;
-using Lib_K_Relay.Networking.Packets.Server;
 using Lib_K_Relay.GameData;
+using Lib_K_Relay.Networking.Packets;
+using Lib_K_Relay.Networking.Packets.DataObjects;
+using Lib_K_Relay.Networking.Packets.Server;
+using Newtonsoft.Json;
 
 namespace MapRipper
 {
@@ -43,7 +40,7 @@ namespace MapRipper
         public int[][] Tiles { get; private set; }
         public Entity[][][] Entities { get; private set; }
 
-        private int currentTiles;
+        private int _currentTiles;
 
         public delegate void TilesChangedDelegate(int currentTiles);
 
@@ -51,14 +48,22 @@ namespace MapRipper
 
         public void Init(int w, int h, string name)
         {
-            Width = w; Height = h;
+            Width = w;
+            Height = h;
             Tiles = new int[w][];
             Name = name;
-            for (int i = 0; i < w; i++) Tiles[i] = new int[h];
+            for (int i = 0; i < w; i++)
+            {
+                Tiles[i] = new int[h];
+            }
 
-            for (int w_ = 0; w_ < w; w_++)
-                for (int h_ = 0; h_ < h; h_++)
-                    Tiles[w_][h_] = -1;
+            for (int width = 0; width < w; width++)
+            {
+                for (int height = 0; height < h; height++)
+                {
+                    Tiles[width][height] = -1;
+                }
+            }
 
             Entities = new Entity[w][][];
             for (int i = 0; i < w; i++)
@@ -71,120 +76,142 @@ namespace MapRipper
             }
         }
 
-        private struct obj
+        private struct Obj
         {
-            public string name;
-            public string id;
+            public string Name;
+            public string ID;
         }
-        private struct loc
+        private struct Loc
         {
-            public string ground;
-            public obj[] objs;
-            public obj[] regions;
+            public string Ground;
+            public Obj[] Objs;
+            /*
+                        private Obj[] _regions;
+            */
         }
-        private struct json_dat
+        private struct JsonDat
         {
-            public byte[] data;
-            public int width;
-            public int height;
-            public loc[] dict;
+            public byte[] Data;
+            public int Width;
+            public int Height;
+            public Loc[] Dict;
         }
 
         public void Update(UpdatePacket packet)
         {
-            foreach (var t in (packet as UpdatePacket).Tiles)
+            foreach (Tile t in packet.Tiles)
             {
-                this.Tiles[t.X][t.Y] = t.Type;
-                currentTiles++;
-                if (TilesAdded != null)
-                    TilesAdded(this.currentTiles);
+                Tiles[t.X][t.Y] = t.Type;
+                _currentTiles++;
+                TilesAdded?.Invoke(_currentTiles);
             }
 
-            foreach (var tileDef in (packet as UpdatePacket).NewObjs)
+            foreach (Entity tileDef in packet.NewObjs)
             {
-                var def = (Entity)tileDef.Clone();
+                Entity def = (Entity) tileDef.Clone();
 
-                if (isMapObject(def.ObjectType))
-                {
-                    def.Status.Position.X -= 0.5F;
-                    def.Status.Position.Y -= 0.5F;
+                if (!IsMapObject(def.ObjectType))
+                { continue; }
 
-                    int _x = (int)def.Status.Position.X;
-                    int _y = (int)def.Status.Position.Y;
-                    Array.Resize(ref this.Entities[_x][_y], this.Entities[_x][_y].Length + 1);
-                    Entity[] arr = this.Entities[_x][_y];
+                def.Status.Position.X -= 0.5F;
+                def.Status.Position.Y -= 0.5F;
 
-                    arr[arr.Length - 1] = def;
-                }
+                int x = (int) def.Status.Position.X;
+                int y = (int) def.Status.Position.Y;
+                Array.Resize(ref Entities[x][y], Entities[x][y].Length + 1);
+                Entity[] arr = Entities[x][y];
+
+                arr[arr.Length - 1] = def;
             }
         }
 
-        private bool isMapObject(short objType)
+        private static bool IsMapObject(short objType)
         {
-            return true;// Todo: check if player or pet or all that stuff you dont place on the map with the editor
+            return true; // Todo: check if player or pet or all that stuff you dont place on the map with the editor
         }
 
         public string ToJson()
         {
-            var obj = new json_dat();
-            obj.width = Width; obj.height = Height;
-            List<loc> locs = new List<loc>();
+            JsonDat obj = new JsonDat
+            {
+                Width = Width,
+                Height = Height
+            };
+            List<Loc> locs = new List<Loc>();
             MemoryStream ms = new MemoryStream();
             using (PacketWriter wtr = new PacketWriter(ms))
-                for (int y = 0; y < obj.height; y++)
-                    for (int x = 0; x < obj.width; x++)
+            {
+                for (int y = 0; y < obj.Height; y++)
+                {
+                    for (int x = 0; x < obj.Width; x++)
                     {
-                        var loc = new loc();
-                        loc.ground = Tiles[x][y] != -1 ? GetTileId((ushort)Tiles[x][y]) : null;
-                        loc.objs = new obj[Entities[x][y].Length];
-                        for (int i = 0; i < loc.objs.Length; i++)
+                        Loc loc = new Loc
                         {
-                            var en = Entities[x][y][i];
-                            obj o = new obj()
+                            Ground = Tiles[x][y] != -1 ? GetTileID((ushort) Tiles[x][y]) : null,
+                            Objs = new Obj[Entities[x][y].Length]
+                        };
+                        for (int i = 0; i < loc.Objs.Length; i++)
+                        {
+                            Entity en = Entities[x][y][i];
+                            Obj o = new Obj
                             {
-                                id = GetEntityId(en.ObjectType)
+                                ID = GetEntityID(en.ObjectType)
                             };
                             string s = "";
                             Dictionary<StatsType, object> vals = new Dictionary<StatsType, object>();
-                            foreach (var z in en.Status.Data) vals.Add(z.Id, z.IsStringData() ? (object)z.StringValue : (object)z.IntValue);
+                            foreach (StatData z in en.Status.Data)
+                            {
+                                vals.Add(z.Id, z.IsStringData() ? z.StringValue : (object) z.IntValue);
+                            }
+
                             if (vals.ContainsKey(StatsType.Name))
-                                s += ";name:" + vals[StatsType.Name];
+                            { s += ";Name:" + vals[StatsType.Name]; }
                             if (vals.ContainsKey(StatsType.Size))
-                                s += ";size:" + vals[StatsType.Size];
+                            { s += ";size:" + vals[StatsType.Size]; }
                             if (vals.ContainsKey(StatsType.ObjectConnection))
-                                s += ";conn:0x" + ((int)vals[StatsType.ObjectConnection]).ToString("X8");
+                            { s += ";conn:0x" + ((int) vals[StatsType.ObjectConnection]).ToString("X8"); }
                             if (vals.ContainsKey(StatsType.MerchandiseType))
-                                s += ";mtype:" + vals[StatsType.MerchandiseType];
+                            { s += ";mtype:" + vals[StatsType.MerchandiseType]; }
                             if (vals.ContainsKey(StatsType.MerchandiseRemainingCount))
-                                s += ";mcount:" + vals[StatsType.MerchandiseRemainingCount];
+                            { s += ";mcount:" + vals[StatsType.MerchandiseRemainingCount]; }
                             if (vals.ContainsKey(StatsType.MerchandiseRemainingMinutes))
-                                s += ";mtime:" + vals[StatsType.MerchandiseRemainingMinutes];
+                            { s += ";mtime:" + vals[StatsType.MerchandiseRemainingMinutes]; }
                             if (vals.ContainsKey(StatsType.RankRequired))
-                                s += ";nstar:" + vals[StatsType.RankRequired];
-                            o.name = s.Trim(';');
-                            loc.objs[i] = o;
+                            { s += ";nstar:" + vals[StatsType.RankRequired]; }
+
+                            o.Name = s.Trim(';');
+                            loc.Objs[i] = o;
                         }
 
                         int ix = -1;
                         for (int i = 0; i < locs.Count; i++)
                         {
-                            if (locs[i].ground != loc.ground) continue;
-                            if (!((locs[i].objs != null && loc.objs != null) ||
-                              (locs[i].objs == null && loc.objs == null))) continue;
-                            if (locs[i].objs != null)
+                            if (locs[i].Ground != loc.Ground)
+                            { continue; }
+                            if (!(locs[i].Objs != null && loc.Objs != null ||
+                              locs[i].Objs == null && loc.Objs == null))
+                            { continue; }
+
+                            if (locs[i].Objs != null)
                             {
-                                if (locs[i].objs.Length != loc.objs.Length) continue;
+                                if (locs[i].Objs.Length != loc.Objs.Length)
+                                { continue; }
+
                                 bool b = false;
-                                for (int j = 0; j < loc.objs.Length; j++)
-                                    if (locs[i].objs[j].id != loc.objs[j].id ||
-                                        locs[i].objs[j].name != loc.objs[j].name)
+                                for (int j = 0; j < loc.Objs.Length; j++)
+                                {
+                                    if (locs[i].Objs[j].ID != loc.Objs[j].ID ||
+                                        locs[i].Objs[j].Name != loc.Objs[j].Name)
                                     {
                                         b = true;
                                         break;
                                     }
+                                }
+
                                 if (b)
-                                    continue;
+                                { continue; }
                             }
+
                             ix = i;
                             break;
                         }
@@ -193,25 +220,33 @@ namespace MapRipper
                             ix = locs.Count;
                             locs.Add(loc);
                         }
-                        wtr.Write((short)ix);
+                        wtr.Write((short) ix);
                     }
-            obj.data = ZlibStream.CompressBuffer(ms.ToArray());
-            obj.dict = locs.ToArray();
-            var settings = new JsonSerializerSettings();
-            settings.NullValueHandling = NullValueHandling.Ignore;
+                }
+            }
+
+            obj.Data = ZlibStream.CompressBuffer(ms.ToArray());
+            obj.Dict = locs.ToArray();
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
             return JsonConvert.SerializeObject(obj, settings);
         }
 
-        private string GetEntityId(short type)
+        private static string GetEntityID(short type)
         {
-			if (GameData.Tiles.Map.ContainsKey((ushort)type)) return GameData.Tiles.ByID((ushort)type).Name;
-			if (GameData.Objects.Map.ContainsKey((ushort)type)) return GameData.Objects.ByID((ushort)type).Name;
-			throw new Exception("Invalid value: " + type);
+            if (GameData.Tiles.Map.ContainsKey((ushort) type))
+            { return GameData.Tiles.ByID((ushort) type).Name; }
+            if (GameData.Objects.Map.ContainsKey((ushort) type))
+            { return GameData.Objects.ByID((ushort) type).Name; }
+
+            throw new Exception("Invalid value: " + type);
         }
 
-        private string GetTileId(ushort type)
+        private static string GetTileID(ushort type)
         {
-			return GameData.Tiles.ByID(type).Name;
+            return GameData.Tiles.ByID(type).Name;
         }
     }
 }

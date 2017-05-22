@@ -227,7 +227,9 @@ namespace K_Relay.Controls
             Color borderColor = MetroPaint.BorderColor.Button.Normal(Theme);
 
             if (useStyleColors)
+            {
                 borderColor = MetroPaint.GetStyleColor(Style);
+            }
 
             using (Pen p = new Pen(borderColor))
             {
@@ -253,13 +255,20 @@ namespace K_Relay.Controls
 
         private void UpdateBaseListBox()
         {
-            if (baseListBox == null) return;
+            if (baseListBox == null)
+            {
+                return;
+            }
+
             baseListBox.Location = new Point(3, 3);
             baseListBox.Size = new Size(Width - 16, Height - 6);
             scrollBar.Height = this.baseListBox.Height;
             scrollBar.Location = new Point(baseListBox.Width + 2, 3);
 
-            if (scrollBar.Height == 0) return;
+            if (scrollBar.Height == 0)
+            {
+                return;
+            }
 
             scrollBar.Maximum = this.ItemHeight * this.baseListBox.Items.Count;
             scrollBar.Minimum = 0;
@@ -273,7 +282,10 @@ namespace K_Relay.Controls
         private void InitializeBaseListBox()
         {
             this.SuspendLayout();
-            if (baseListBox != null) return;
+            if (baseListBox != null)
+            {
+                return;
+            }
 
             scrollBar = new MetroScrollBar();
             baseListBox = new ListBoxBase();
@@ -320,7 +332,9 @@ namespace K_Relay.Controls
         private void BaseListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedIndexChanged != null)
+            {
                 SelectedIndexChanged(sender, e);
+            }
         }
 
 
@@ -331,7 +345,9 @@ namespace K_Relay.Controls
         private void BaseListBoxAcceptsTabChanged(object sender, EventArgs e)
         {
             if (AcceptsTabChanged != null)
+            {
                 AcceptsTabChanged(this, e);
+            }
         }
 
         private void BaseListBoxSizeChanged(object sender, EventArgs e)

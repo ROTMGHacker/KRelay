@@ -46,12 +46,16 @@ namespace Lib_K_Relay.Networking
             PluginUtils.Delay(1000, () =>
             {
                 string message = "Welcome to K Relay!";
-				string server = "";
-				if (GameData.GameData.Servers.Map.Where(s => s.Value.Address == client.State.ConTargetAddress).Any())
-					server = GameData.GameData.Servers.Match(s => s.Address == client.State.ConTargetAddress).Name;
+                string server = "";
+                if (GameData.GameData.Servers.Map.Where(s => s.Value.Address == client.State.ConTargetAddress).Any())
+                {
+                    server = GameData.GameData.Servers.Match(s => s.Address == client.State.ConTargetAddress).Name;
+                }
 
                 if (server != "")
+                {
                     message += "\\n" + server;
+                }
 
                 client.SendToClient(PluginUtils.CreateNotification(client.ObjectId, message));
             });
@@ -60,11 +64,13 @@ namespace Lib_K_Relay.Networking
         private void OnReconnect(Client client, ReconnectPacket packet)
         {
             if (packet.Host.Contains(".com"))
+            {
                 packet.Host = Dns.GetHostEntry(packet.Host).AddressList[0].ToString();
+            }
 
             if (packet.Name.ToLower().Contains("nexusportal"))
             {
-                ReconnectPacket recon = (ReconnectPacket)Packet.Create(PacketType.RECONNECT);
+                ReconnectPacket recon = (ReconnectPacket) Packet.Create(PacketType.RECONNECT);
                 recon.IsFromArena = false;
                 recon.GameId = packet.GameId;
                 recon.Host = packet.Host == "" ? client.State.ConTargetAddress : packet.Host;
@@ -76,7 +82,7 @@ namespace Lib_K_Relay.Networking
             }
             else if (packet.Name != "" && !packet.Name.Contains("vault") && packet.GameId != -2)
             {
-                ReconnectPacket drecon = (ReconnectPacket)Packet.Create(PacketType.RECONNECT);
+                ReconnectPacket drecon = (ReconnectPacket) Packet.Create(PacketType.RECONNECT);
                 drecon.IsFromArena = false;
                 drecon.GameId = packet.GameId;
                 drecon.Host = packet.Host == "" ? client.State.ConTargetAddress : packet.Host;
@@ -88,13 +94,19 @@ namespace Lib_K_Relay.Networking
             }
 
             if (packet.Port != -1)
+            {
                 client.State.ConTargetPort = packet.Port;
+            }
 
             if (packet.Host != "")
+            {
                 client.State.ConTargetAddress = packet.Host;
+            }
 
             if (packet.Key.Length != 0)
+            {
                 client.State.ConRealKey = packet.Key;
+            }
 
             // Tell the client to connect to the proxy
             packet.Key = Encoding.UTF8.GetBytes(client.State.GUID);
@@ -104,39 +116,49 @@ namespace Lib_K_Relay.Networking
 
         private void OnConnectCommand(Client client, string command, string[] args)
         {
-			if (args.Length == 1)
-			{
-				if (GameData.GameData.Servers.Map.ContainsKey(args[0].ToUpper()))
-				{
-					ReconnectPacket reconnect = (ReconnectPacket)Packet.Create(PacketType.RECONNECT);
-					reconnect.Host = GameData.GameData.Servers.ByID(args[0].ToUpper()).Address;
-					reconnect.Port = 2050;
-					reconnect.GameId = -2;
-					reconnect.Name = "Nexus";
-					reconnect.IsFromArena = false;
-					reconnect.Key = new byte[0];
-					reconnect.KeyTime = 0;
-					SendReconnect(client, reconnect);
-				}
-				else
-					client.SendToClient(PluginUtils.CreateOryxNotification("K Relay", "Unknown server!"));
-			}
+            if (args.Length == 1)
+            {
+                if (GameData.GameData.Servers.Map.ContainsKey(args[0].ToUpper()))
+                {
+                    ReconnectPacket reconnect = (ReconnectPacket) Packet.Create(PacketType.RECONNECT);
+                    reconnect.Host = GameData.GameData.Servers.ByID(args[0].ToUpper()).Address;
+                    reconnect.Port = 2050;
+                    reconnect.GameId = -2;
+                    reconnect.Name = "Nexus";
+                    reconnect.IsFromArena = false;
+                    reconnect.Key = new byte[0];
+                    reconnect.KeyTime = 0;
+                    SendReconnect(client, reconnect);
+                }
+                else
+                {
+                    client.SendToClient(PluginUtils.CreateOryxNotification("K Relay", "Unknown server!"));
+                }
+            }
         }
 
         private void OnReconCommand(Client client, string command, string[] args)
         {
             if (client.State.LastRealm != null)
+            {
                 SendReconnect(client, client.State.LastRealm);
+            }
             else
+            {
                 client.SendToClient(PluginUtils.CreateOryxNotification("K Relay", "Last realm is unknown!"));
+            }
         }
 
         private void OnDreconCommand(Client client, string command, string[] args)
         {
             if (client.State.LastDungeon != null)
+            {
                 SendReconnect(client, client.State.LastDungeon);
+            }
             else
+            {
                 client.SendToClient(PluginUtils.CreateOryxNotification("K Relay", "Last dungeon is unknown!"));
+            }
         }
 
         public static void SendReconnect(Client client, ReconnectPacket reconnect)

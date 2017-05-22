@@ -1,53 +1,46 @@
-﻿using MetroFramework;
+﻿using System;
+using System.Diagnostics;
+using System.Windows.Forms;
+using MetroFramework;
 using MetroFramework.Components;
 using MetroFramework.Forms;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace MapRipper
 {
     public partial class HandleForm : MetroForm
     {
-        private Plugin m_plugin;
-        private FixedStyleManager m_styleManager;
+        private readonly MapRipper _mPlugin;
+        private readonly FixedStyleManager _mStyleManager;
 
-        public HandleForm(Plugin plugin)
+        public HandleForm(MapRipper plugin)
         {
-            this.m_plugin = plugin;
+            _mPlugin = plugin;
             InitializeComponent();
-            this.m_styleManager = new FixedStyleManager(this);
+            _mStyleManager = new FixedStyleManager(this);
 
-            this.clrStyle.SelectedValueChanged += clrStyle_SelectedValueChanged;
-            this.clrTheme.SelectedValueChanged += clrTheme_SelectedValueChanged;
+            clrStyle.SelectedValueChanged += clrStyle_SelectedValueChanged;
+            clrTheme.SelectedValueChanged += clrTheme_SelectedValueChanged;
 
-            this.clrStyle.Items.AddRange(Enum.GetNames(typeof(MetroColorStyle)));
-            this.clrTheme.Items.AddRange(Enum.GetNames(typeof(MetroThemeStyle)));
+            clrStyle.Items.AddRange(Enum.GetNames(typeof(MetroColorStyle)));
+            clrTheme.Items.AddRange(Enum.GetNames(typeof(MetroThemeStyle)));
 
-            this.widthLabel.Text = String.Format(this.widthLabel.Text, (this.m_plugin.Map != null ? this.m_plugin.Map.Width.ToString() : "Not in world"));
-            this.heightLabel.Text = String.Format(this.heightLabel.Text, (this.m_plugin.Map != null ? this.m_plugin.Map.Height.ToString() : "Not in world"));
+            widthLabel.Text = string.Format(widthLabel.Text, _mPlugin.Map?.Width.ToString() ?? "Not in world");
+            heightLabel.Text = string.Format(heightLabel.Text, _mPlugin.Map?.Height.ToString() ?? "Not in world");
 
-            this.metroTile1.Text = (this.m_plugin.Map != null ? this.m_plugin.Map.Name.ToString() : "Not in world");
+            metroTile1.Text = _mPlugin.Map != null ? _mPlugin.Map.Name : "Not in world";
 
-            this.clrTheme.SelectedItem = this.clrStyle.SelectedItem = "Default";
+            clrTheme.SelectedItem = clrStyle.SelectedItem = "Default";
 
-            if (this.m_plugin.Map != null)
+            if (_mPlugin.Map != null)
             {
-                this.m_plugin.Map.TilesAdded += Map_TilesAdded;
+                _mPlugin.Map.TilesAdded += Map_TilesAdded;
                 //this.metroProgressBar1.Maximum = this.m_plugin.Map.Tiles[0].Length * this.m_plugin.Map.Tiles[1].Length;
             }
         }
 
-        void Map_TilesAdded(int currentTiles)
+        private void Map_TilesAdded(int currentTiles)
         {
-            this.Invoke(new Action(() =>
+            Invoke(new Action(() =>
             {
                 //this.metroProgressBar1.Value = currentTiles;
             }));
@@ -55,12 +48,12 @@ namespace MapRipper
 
         private void clrTheme_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.m_styleManager.Theme = (MetroThemeStyle)Enum.Parse(typeof(MetroThemeStyle), (string)clrTheme.SelectedItem, true);
+            _mStyleManager.Theme = (MetroThemeStyle)Enum.Parse(typeof(MetroThemeStyle), (string)clrTheme.SelectedItem, true);
         }
 
         private void clrStyle_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.m_styleManager.Style = (MetroColorStyle)Enum.Parse(typeof(MetroColorStyle), (string)clrStyle.SelectedItem, true);
+            _mStyleManager.Style = (MetroColorStyle)Enum.Parse(typeof(MetroColorStyle), (string)clrStyle.SelectedItem, true);
         }
 
         private void saveMapButton_Click(object sender, EventArgs e)
@@ -78,51 +71,50 @@ namespace MapRipper
 
         private class FixedStyleManager
         {
-            private MetroStyleManager m_manager;
+            private readonly MetroStyleManager _mManager;
 
-            private MetroColorStyle m_colorStyle;
-            private MetroThemeStyle m_themeStyle;
+            private MetroColorStyle _mColorStyle;
+            private MetroThemeStyle _mThemeStyle;
             
 
             public FixedStyleManager(MetroForm form)
             {
-                this.m_manager = new MetroStyleManager(form.Container);
-                this.m_manager.Owner = form;
+                _mManager = new MetroStyleManager(form.Container) {Owner = form};
             }
 
             public MetroColorStyle Style
             {
-                get { return this.m_colorStyle; }
+                get => _mColorStyle;
                 set
                 {
-                    this.m_colorStyle = value;
+                    _mColorStyle = value;
                     Update();
                 }
             }
 
             public MetroThemeStyle Theme
             {
-                get { return this.m_themeStyle; }
+                get => _mThemeStyle;
                 set
                 {
-                    this.m_themeStyle = value;
+                    _mThemeStyle = value;
                     Update();
                 }
             }
 
-            public void Update()
+            private void Update()
             {
-                (this.m_manager.Owner as MetroForm).Theme = this.m_themeStyle;
-                (this.m_manager.Owner as MetroForm).Style = this.m_colorStyle;
+                ((MetroForm) _mManager.Owner).Theme = _mThemeStyle;
+                ((MetroForm) _mManager.Owner).Style = _mColorStyle;
 
-                this.m_manager.Theme = this.m_themeStyle;
-                this.m_manager.Style = this.m_colorStyle;
+                _mManager.Theme = _mThemeStyle;
+                _mManager.Style = _mColorStyle;
             }
         }
 
         private void metroTile1_Click(object sender, EventArgs e)
         {
-            Process.Start("http://www.realmeye.com/wiki-search?q=" + this.metroTile1.Text);
+            Process.Start("http://www.realmeye.com/wiki-search?q=" + metroTile1.Text);
         }
     }
 }

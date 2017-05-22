@@ -1,11 +1,14 @@
-﻿namespace MapFilter
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace MapFilter
 {
     partial class FrmMapFilterSettings
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -268,23 +271,23 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabMain;
-        private System.Windows.Forms.TabPage tabTiles;
-        private System.Windows.Forms.TabPage tabObjects;
-        private System.Windows.Forms.ListBox listTileFilters;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnAddTile;
-        private System.Windows.Forms.Button btnRemoveTile;
-        private System.Windows.Forms.Button btnRemoveObject;
-        private System.Windows.Forms.Button btnAddObject;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListBox listObjectFilters;
-        private System.Windows.Forms.CheckBox chkEnabled;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem btnDone;
-        private System.Windows.Forms.ToolStripMenuItem btnReset;
-        private System.Windows.Forms.ToolStripMenuItem doneToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem resetToDefaultToolStripMenuItem;
+        private TabControl tabMain;
+        private TabPage tabTiles;
+        private TabPage tabObjects;
+        private ListBox listTileFilters;
+        private Label label1;
+        private Button btnAddTile;
+        private Button btnRemoveTile;
+        private Button btnRemoveObject;
+        private Button btnAddObject;
+        private Label label2;
+        private ListBox listObjectFilters;
+        private CheckBox chkEnabled;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem btnDone;
+        private ToolStripMenuItem btnReset;
+        private ToolStripMenuItem doneToolStripMenuItem;
+        private ToolStripMenuItem resetToDefaultToolStripMenuItem;
 
     }
 }

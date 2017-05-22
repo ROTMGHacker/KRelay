@@ -20,8 +20,14 @@ namespace Lib_K_Relay.Networking.Packets.DataObjects
         public IDataObject Read(PacketReader r)
         {
             Id = r.ReadByte();
-            if (IsStringData()) StringValue = r.ReadString();
-            else IntValue = r.ReadInt32();
+            if (IsStringData())
+            {
+                StringValue = r.ReadString();
+            }
+            else
+            {
+                IntValue = r.ReadInt32();
+            }
 
             return this;
         }
@@ -29,8 +35,14 @@ namespace Lib_K_Relay.Networking.Packets.DataObjects
         public void Write(PacketWriter w)
         {
             w.Write(Id);
-            if (IsStringData()) w.Write(StringValue);
-            else w.Write(IntValue);
+            if (IsStringData())
+            {
+                w.Write(StringValue);
+            }
+            else
+            {
+                w.Write(IntValue);
+            }
         }
 
         public object Clone()
@@ -169,13 +181,20 @@ namespace Lib_K_Relay.Networking.Packets.DataObjects
         {
             if (this == StatsType.Name || this == StatsType.AccountId || this == StatsType.OwnerAccountId
                || this == StatsType.GuildName || this == StatsType.PetName)
+            {
                 return true;
+            }
+
             return false;
         }
 
         public static implicit operator StatsType(int type)
         {
-            if (type > byte.MaxValue) throw new Exception("Not a valid StatData number.");
+            if (type > byte.MaxValue)
+            {
+                throw new Exception("Not a valid StatData number.");
+            }
+
             return new StatsType((byte)type);
         }
 
@@ -186,7 +205,11 @@ namespace Lib_K_Relay.Networking.Packets.DataObjects
 
         public static bool operator ==(StatsType type, int id)
         {
-            if (id > byte.MaxValue) throw new Exception("Not a valid StatData number.");
+            if (id > byte.MaxValue)
+            {
+                throw new Exception("Not a valid StatData number.");
+            }
+
             return type.m_type == (byte)id;
         }
 
@@ -197,7 +220,11 @@ namespace Lib_K_Relay.Networking.Packets.DataObjects
 
         public static bool operator !=(StatsType type, int id)
         {
-            if (id > byte.MaxValue) throw new Exception("Not a valid StatData number.");
+            if (id > byte.MaxValue)
+            {
+                throw new Exception("Not a valid StatData number.");
+            }
+
             return type.m_type != (byte)id;
         }
 
@@ -233,7 +260,11 @@ namespace Lib_K_Relay.Networking.Packets.DataObjects
 
         public override bool Equals(object obj)
         {
-            if (!(obj is StatsType)) return false;
+            if (!(obj is StatsType))
+            {
+                return false;
+            }
+
             return this == (StatsType)obj;
         }
         public override string ToString()

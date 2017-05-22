@@ -371,7 +371,9 @@ namespace K_Relay.Controls
         private void BaseTextBoxAcceptsTabChanged(object sender, EventArgs e)
         {
             if (AcceptsTabChanged != null)
+            {
                 AcceptsTabChanged(this, e);
+            }
         }
         
         private void BaseTextBoxSizeChanged(object sender, EventArgs e)
@@ -522,7 +524,9 @@ namespace K_Relay.Controls
             Color borderColor = MetroPaint.BorderColor.Button.Normal(Theme);
 
             if (useStyleColors)
+            {
                 borderColor = MetroPaint.GetStyleColor(Style);
+            }
 
             using (Pen p = new Pen(borderColor))
             {
@@ -572,7 +576,10 @@ namespace K_Relay.Controls
 
         private void CreateBaseTextBox()
         {
-            if (baseTextBox != null) return;
+            if (baseTextBox != null)
+            {
+                return;
+            }
 
             baseTextBox = new PromptedTextBox();
 
@@ -612,7 +619,10 @@ namespace K_Relay.Controls
 
         private void UpdateBaseTextBox()
         {
-            if (baseTextBox == null) return;
+            if (baseTextBox == null)
+            {
+                return;
+            }
 
             baseTextBox.Font = MetroFonts.TextBox(metroTextBoxSize, metroTextBoxWeight);
 
@@ -728,14 +738,21 @@ namespace K_Relay.Controls
         public void AppendText(string text, Color color, bool bold) //Empty for use theme color
         {
             if (appendings.Count(_ => _.Text == text && _.Color == color && _.Bold == bold) == 0)
+            {
                 appendings.Add(Appending.Create(text, color, bold));
+            }
 
             baseTextBox.SelectionStart = baseTextBox.TextLength;
             baseTextBox.SelectionLength = 0;
             if (bold)
+            {
                 baseTextBox.SelectionFont = new Font(baseTextBox.Font, FontStyle.Bold);
+            }
             else
+            {
                 baseTextBox.SelectionFont = new Font(baseTextBox.Font, FontStyle.Regular);
+            }
+
             baseTextBox.SelectionColor = color == Color.Empty ? MetroPaint.ForeColor.Label.Normal(Theme) : color;
             baseTextBox.AppendText(text);
             baseTextBox.SelectionColor = baseTextBox.ForeColor;
@@ -744,7 +761,9 @@ namespace K_Relay.Controls
         public void ReAppendText()
         {
             foreach (var app in appendings)
+            {
                 AppendText(app.Text, app.Color, app.Bold);
+            }
         }
 
         public RichTextBox ToWinFormRTB()

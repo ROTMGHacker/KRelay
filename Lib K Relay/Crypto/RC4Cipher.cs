@@ -57,7 +57,7 @@ namespace Lib_K_Relay.Crypto
                 engineState[y] = tmp;
 
                 // xor
-                output[i + outOff] = (byte)(input[i + inOff]
+                output[i + outOff] = (byte) (input[i + inOff]
                         ^ engineState[(engineState[x] + engineState[y]) & 0xff]);
             }
         }
@@ -68,11 +68,15 @@ namespace Lib_K_Relay.Crypto
             x = y = 0;
 
             if (engineState == null)
+            {
                 engineState = new byte[STATE_LENGTH];
+            }
 
             // reset the state of the engine
             for (int i = 0; i < STATE_LENGTH; i++)
-                engineState[i] = (byte)i;
+            {
+                engineState[i] = (byte) i;
+            }
 
             int i1 = 0, i2 = 0;
 
@@ -90,7 +94,9 @@ namespace Lib_K_Relay.Crypto
         public static byte[] HexStringToBytes(string key)
         {
             if (key.Length % 2 != 0)
+            {
                 throw new ArgumentException("Invalid hex string!");
+            }
 
             byte[] bytes = new byte[key.Length / 2];
             char[] c = key.ToCharArray();
@@ -98,7 +104,7 @@ namespace Lib_K_Relay.Crypto
             {
                 StringBuilder sb = new StringBuilder(2).Append(c[i]).Append(c[(i + 1)]);
                 int j = Convert.ToInt32(sb.ToString(), 16);
-                bytes[(i / 2)] = (byte)j;
+                bytes[(i / 2)] = (byte) j;
             }
             return bytes;
         }

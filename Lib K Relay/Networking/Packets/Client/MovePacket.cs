@@ -24,7 +24,9 @@ namespace Lib_K_Relay.Networking.Packets.Client
             NewPosition = (Location)new Location().Read(r);
             Records = new LocationRecord[r.ReadInt16()];
             for (int i = 0; i < Records.Length; i++)
+            {
                 Records[i] = (LocationRecord)new LocationRecord().Read(r);
+            }
         }
 
         public override void Write(PacketWriter w)
@@ -34,7 +36,9 @@ namespace Lib_K_Relay.Networking.Packets.Client
             NewPosition.Write(w);
             w.Write((short)Records.Length);
             foreach (LocationRecord l in Records)
+            {
                 l.Write(w);
+            }
         }
     }
 }

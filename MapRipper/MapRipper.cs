@@ -35,14 +35,14 @@ using Lib_K_Relay.Utilities;
 
 namespace MapRipper
 {
-    public class Plugin : IPlugin
+    public class MapRipper : IPlugin
     {
         private bool _enabled;
         private readonly Dictionary<string, Assembly> _mDependencies;
 
         public JsonMap Map { get; private set; }
 
-        public Plugin()
+        public MapRipper()
         {
             _mDependencies = new Dictionary<string, Assembly>();
             LoadAssembly("MapRipper.Lib.Ionic.ZLib.dll");
@@ -126,7 +126,7 @@ namespace MapRipper
 
         private void LoadAssembly(string path)
         {
-            using (Stream assemblyStream = typeof(Plugin).Assembly.GetManifestResourceStream(path))
+            using (Stream assemblyStream = typeof(MapRipper).Assembly.GetManifestResourceStream(path))
             {
                 byte[] assemblyData = new byte[assemblyStream.Length];
                 assemblyStream.Read(assemblyData, 0, assemblyData.Length);

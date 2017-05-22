@@ -21,7 +21,10 @@ namespace Lib_K_Relay.Networking.Packets.Server
             byte c = r.ReadByte();
             Effects = 0;
             for (int i = 0; i < c; i++)
+            {
                 Effects |= (ConditionEffects)(1 << r.ReadByte());
+            }
+
             Damage = r.ReadUInt16();
             Killed = r.ReadBoolean();
             BulletId = r.ReadByte();
@@ -33,10 +36,19 @@ namespace Lib_K_Relay.Networking.Packets.Server
             w.Write(TargetId);
             List<byte> eff = new List<byte>();
             for (byte i = 1; i < 255; i++)
+            {
                 if ((Effects & (ConditionEffects)(1 << i)) != 0)
+                {
                     eff.Add(i);
+                }
+            }
+
             w.Write((byte)eff.Count);
-            foreach (byte i in eff) w.Write(i);
+            foreach (byte i in eff)
+            {
+                w.Write(i);
+            }
+
             w.Write(Damage);
             w.Write(Killed);
             w.Write(BulletId);

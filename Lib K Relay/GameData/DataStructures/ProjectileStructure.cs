@@ -60,7 +60,7 @@ namespace Lib_K_Relay.GameData.DataStructures
 
         public ProjectileStructure(XElement projectile)
         {
-            ID = (byte)projectile.AttrDefault("id", "0").ParseInt();
+            ID = (byte) projectile.AttrDefault("id", "0").ParseInt();
             Damage = projectile.ElemDefault("Damage", "0").ParseInt();
             Speed = projectile.ElemDefault("Speed", "0").ParseFloat() / 10000f;
             Size = projectile.ElemDefault("Size", "0").ParseInt();

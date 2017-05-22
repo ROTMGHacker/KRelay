@@ -1,11 +1,14 @@
-﻿namespace TraderBot
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace TraderBot
 {
 	partial class FrmTraderBot
 	{
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -227,21 +230,21 @@
 
 		#endregion
 
-		private System.Windows.Forms.RadioButton radioButton1;
-		private System.Windows.Forms.RadioButton radioButton2;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
-		private System.Windows.Forms.ListView listView1;
-		private System.Windows.Forms.ColumnHeader columnHeader1;
-		private System.Windows.Forms.ColumnHeader columnHeader2;
-		private System.Windows.Forms.ListView listView2;
-		private System.Windows.Forms.ColumnHeader columnHeader3;
-		private System.Windows.Forms.ColumnHeader columnHeader4;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.ColumnHeader columnHeader5;
-		private System.Windows.Forms.ColumnHeader columnHeader6;
+		private RadioButton radioButton1;
+		private RadioButton radioButton2;
+		private ComboBox comboBox1;
+		private Button button1;
+		private NumericUpDown numericUpDown1;
+		private ListView listView1;
+		private ColumnHeader columnHeader1;
+		private ColumnHeader columnHeader2;
+		private ListView listView2;
+		private ColumnHeader columnHeader3;
+		private ColumnHeader columnHeader4;
+		private Label label1;
+		private TextBox textBox1;
+		private Button button2;
+		private ColumnHeader columnHeader5;
+		private ColumnHeader columnHeader6;
 	}
 }

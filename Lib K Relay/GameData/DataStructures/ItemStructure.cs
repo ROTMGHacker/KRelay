@@ -14,7 +14,8 @@ namespace Lib_K_Relay.GameData.DataStructures
             doc.Element("Objects")
                 .Elements("Object")
                 .Where(elem => elem.HasElement("Item"))
-                .ForEach(item => {
+                .ForEach(item =>
+                {
                     ItemStructure i = new ItemStructure(item);
                     map[i.ID] = i;
                 });
@@ -118,14 +119,14 @@ namespace Lib_K_Relay.GameData.DataStructures
 
         public ItemStructure(XElement item)
         {
-            ID = (ushort)item.AttrDefault("type", "0x0").ParseHex();
-            Tier = item.HasElement("Tier") ? (Tiers)item.Element("Tier").Value.ParseInt() : Tiers.UT;
-            SlotType = (byte)item.ElemDefault("SlotType", "0").ParseInt();
+            ID = (ushort) item.AttrDefault("type", "0x0").ParseHex();
+            Tier = item.HasElement("Tier") ? (Tiers) item.Element("Tier").Value.ParseInt() : Tiers.UT;
+            SlotType = (byte) item.ElemDefault("SlotType", "0").ParseInt();
             RateOfFire = item.ElemDefault("RateOfFire", "1").ParseFloat();
-            FeedPower = (uint)item.ElemDefault("feedPower", "0").ParseInt();
-            BagType = (byte)item.ElemDefault("BagType", "0").ParseInt();
-            MPCost = (byte)item.ElemDefault("MpCost", "0").ParseInt();
-            FameBonus = (byte)item.ElemDefault("FameBonus", "0").ParseInt();
+            FeedPower = (uint) item.ElemDefault("feedPower", "0").ParseInt();
+            BagType = (byte) item.ElemDefault("BagType", "0").ParseInt();
+            MPCost = (byte) item.ElemDefault("MpCost", "0").ParseInt();
+            FameBonus = (byte) item.ElemDefault("FameBonus", "0").ParseInt();
 
             Soulbound = item.HasElement("Soulbound");
             Usable = item.HasElement("Usable");
@@ -135,7 +136,9 @@ namespace Lib_K_Relay.GameData.DataStructures
 
             NumProjectiles = item.ElemDefault("NumProjectiles", "0").ParseInt();
             if (item.HasElement("Projectile"))
+            {
                 Projectile = new ProjectileStructure(item.Element("Projectile"));
+            }
         }
 
         public override string ToString()

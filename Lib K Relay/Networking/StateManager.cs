@@ -35,8 +35,8 @@ namespace Lib_K_Relay.Networking
         {
             client.PlayerData.Pos = new Location()
             {
-                X = packet.Position.X - 0.3f * (float)Math.Cos(packet.Angle),
-                Y = packet.Position.Y - 0.3f * (float)Math.Sin(packet.Angle)
+                X = packet.Position.X - 0.3f * (float) Math.Cos(packet.Angle),
+                Y = packet.Position.Y - 0.3f * (float) Math.Sin(packet.Angle)
             };
         }
 
@@ -58,17 +58,26 @@ namespace Lib_K_Relay.Networking
         private void OnUpdate(Client client, UpdatePacket packet)
         {
             client.PlayerData.Parse(packet);
-            if (client.State.ACCID != null) return;
+            if (client.State.ACCID != null)
+            {
+                return;
+            }
             //client.State.ACCID = client.PlayerData.AccountId;
 
             State resolvedState = null;
 
             foreach (State cstate in _proxy.States.Values)
+            {
                 if (cstate.ACCID == client.PlayerData.AccountId)
+                {
                     resolvedState = cstate;
+                }
+            }
 
             if (resolvedState == null)
+            {
                 client.State.ACCID = client.PlayerData.AccountId;
+            }
             else
             {
                 /*foreach (var pair in client.State.States)
@@ -78,25 +87,41 @@ namespace Lib_K_Relay.Networking
                 client.State = resolvedState;*/
 
                 if (client.State.ACCID == null && resolvedState.ACCID != null)
+                {
                     client.State.ACCID = resolvedState.ACCID;
+                }
+
                 if (client.State.ConRealKey == null && resolvedState.ConRealKey != null)
+                {
                     client.State.ConRealKey = resolvedState.ConRealKey;
+                }
+
                 if (client.State.ConTargetAddress == null && resolvedState.ConTargetAddress != null)
                 {
                     client.State.ConTargetAddress = resolvedState.ConTargetAddress;
                     client.State.ConTargetPort = resolvedState.ConTargetPort;
                 }
                 if (client.State.GUID == null && resolvedState.GUID != null)
+                {
                     client.State.GUID = resolvedState.GUID;
+                }
+
                 if (client.State.LastDungeon == null && resolvedState.LastDungeon != null)
+                {
                     client.State.LastDungeon = resolvedState.LastDungeon;
+                }
+
                 if (client.State.LastRealm == null && resolvedState.LastRealm != null)
+                {
                     client.State.LastRealm = resolvedState.LastRealm;
+                }
 
                 foreach (var s in resolvedState.States)
                 {
                     if (!client.State.States.ContainsKey(s.Key))
+                    {
                         client.State.States.Add(s.Key, s.Value);
+                    }
                     else if (client.State.States[s.Key] == null && s.Value != null)
                     {
                         client.State.States[s.Key] = s.Value;

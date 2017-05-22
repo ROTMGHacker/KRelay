@@ -23,7 +23,9 @@ namespace Lib_K_Relay.Networking.Packets.Server
 
             Statuses = new Status[r.ReadInt16()];
             for (int i = 0; i < Statuses.Length; i++)
+            {
                 Statuses[i] = (Status)new Status().Read(r);
+            }
         }
 
         public override void Write(PacketWriter w)
@@ -32,7 +34,10 @@ namespace Lib_K_Relay.Networking.Packets.Server
             w.Write(TickTime);
 
             w.Write((short)Statuses.Length);
-            foreach (Status s in Statuses) s.Write(w);
+            foreach (Status s in Statuses)
+            {
+                s.Write(w);
+            }
         }
     }
 }

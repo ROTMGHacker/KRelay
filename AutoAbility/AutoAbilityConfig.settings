@@ -14,7 +14,7 @@
     <Setting Name="WarriorAutoBuff" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="EnabledByDefault" Type="System.Boolean" Scope="User">
+    <Setting Name="Enabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="RequiredManaPercent" Type="System.Single" Scope="User">

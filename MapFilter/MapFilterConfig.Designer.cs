@@ -8,14 +8,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
 namespace MapFilter {
     
     
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    internal sealed partial class MapFilterConfig : global::System.Configuration.ApplicationSettingsBase {
+    [CompilerGenerated()]
+    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    internal sealed partial class MapFilterConfig : ApplicationSettingsBase {
         
-        private static MapFilterConfig defaultInstance = ((MapFilterConfig)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new MapFilterConfig())));
+        private static MapFilterConfig defaultInstance = ((MapFilterConfig)(Synchronized(new MapFilterConfig())));
         
         public static MapFilterConfig Default {
             get {
@@ -23,9 +29,9 @@ namespace MapFilter {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
         public bool Enabled {
             get {
                 return ((bool)(this["Enabled"]));
@@ -35,9 +41,9 @@ namespace MapFilter {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>Blue Sprite Tree=&gt;None</string>
   <string>White Sprite Tree=&gt;None</string>
@@ -46,23 +52,23 @@ namespace MapFilter {
   <string>Purple Sprite Tree=&gt;None</string>
   <string>Yellow Sprite Tree=&gt;None</string>
 </ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection ObjectFilters {
+        public StringCollection ObjectFilters {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["ObjectFilters"]));
+                return ((StringCollection)(this["ObjectFilters"]));
             }
             set {
                 this["ObjectFilters"] = value;
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
             "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
             "tring>Ice Slide=&gt;Gold Tile</string>\r\n</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection TileFilters {
+        public StringCollection TileFilters {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["TileFilters"]));
+                return ((StringCollection)(this["TileFilters"]));
             }
             set {
                 this["TileFilters"] = value;

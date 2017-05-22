@@ -157,7 +157,7 @@ namespace Lib_K_Relay.Networking
                     MemoryStream ms = new MemoryStream();
                     using (PacketWriter w = new PacketWriter(ms))
                     {
-                        w.Write((int)0);
+                        w.Write((int) 0);
                         w.Write(packet.Id);
                         packet.Write(w);
                     }
@@ -177,7 +177,10 @@ namespace Lib_K_Relay.Networking
                     }
                 }, "PacketSend (packet = " + packet?.Type + ")", typeof(IOException));
 
-                if (!success) Dispose();
+                if (!success)
+                {
+                    Dispose();
+                }
             }
         }
 
@@ -198,7 +201,10 @@ namespace Lib_K_Relay.Networking
 
             bool success = PluginUtils.ProtectedInvoke(() =>
             {
-                if (!stream.CanRead) return;
+                if (!stream.CanRead)
+                {
+                    return;
+                }
 
                 int read = stream.EndRead(ar);
                 buffer.Advance(read);
@@ -224,19 +230,28 @@ namespace Lib_K_Relay.Networking
                     Packet packet = Packet.Create(buffer.Bytes);
 
                     if (isClient)
+                    {
                         _proxy.FireClientPacket(this, packet);
+                    }
                     else
+                    {
                         _proxy.FireServerPacket(this, packet);
+                    }
 
                     if (packet.Send)
+                    {
                         Send(packet, !isClient);
+                    }
 
                     buffer.Reset();
                     BeginRead(0, 4, isClient);
                 }
             }, "RemoteRead (isClient = " + isClient + ")", typeof(IOException));
 
-            if (!success) Dispose();
+            if (!success)
+            {
+                Dispose();
+            }
         }
     }
 }

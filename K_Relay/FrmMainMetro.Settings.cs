@@ -82,7 +82,10 @@ namespace K_Relay
                 {
                     m_colorStyle = value;
                     Update();
-                    if (OnStyleChanged != null) OnStyleChanged(this, new EventArgs());
+                    if (OnStyleChanged != null)
+                    {
+                        OnStyleChanged(this, new EventArgs());
+                    }
                 }
             }
 
@@ -93,7 +96,10 @@ namespace K_Relay
                 {
                     m_themeStyle = value;
                     Update();
-                    if (OnThemeChanged != null) OnThemeChanged(this, new EventArgs());
+                    if (OnThemeChanged != null)
+                    {
+                        OnThemeChanged(this, new EventArgs());
+                    }
                 }
             }
 

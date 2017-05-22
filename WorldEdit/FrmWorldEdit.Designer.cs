@@ -1,11 +1,14 @@
-﻿namespace WorldEdit
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace WorldEdit
 {
     partial class FrmWorldEdit
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -113,10 +116,10 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listTiles;
-        private System.Windows.Forms.Label lblSearch;
-        private System.Windows.Forms.TextBox tbxSearch;
-        private System.Windows.Forms.Button btnToggle;
-        private System.Windows.Forms.Label lblSelected;
+        private ListView listTiles;
+        private Label lblSearch;
+        private TextBox tbxSearch;
+        private Button btnToggle;
+        private Label lblSelected;
     }
 }

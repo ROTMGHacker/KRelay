@@ -8,14 +8,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.Configuration;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
 namespace DailyQuest {
     
     
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class DailyQuestConfig : global::System.Configuration.ApplicationSettingsBase {
+    [CompilerGenerated()]
+    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0")]
+    internal sealed partial class DailyQuestConfig : ApplicationSettingsBase {
         
-        private static DailyQuestConfig defaultInstance = ((DailyQuestConfig)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new DailyQuestConfig())));
+        private static DailyQuestConfig defaultInstance = ((DailyQuestConfig)(Synchronized(new DailyQuestConfig())));
         
         public static DailyQuestConfig Default {
             get {
@@ -23,9 +28,9 @@ namespace DailyQuest {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("False")]
         public bool AutoRequest {
             get {
                 return ((bool)(this["AutoRequest"]));
@@ -35,15 +40,27 @@ namespace DailyQuest {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("False")]
         public bool BagNotifications {
             get {
                 return ((bool)(this["BagNotifications"]));
             }
             set {
                 this["BagNotifications"] = value;
+            }
+        }
+        
+        [UserScopedSetting()]
+        [DebuggerNonUserCode()]
+        [DefaultSettingValue("True")]
+        public bool AutoTurnIn {
+            get {
+                return ((bool)(this["AutoTurnIn"]));
+            }
+            set {
+                this["AutoTurnIn"] = value;
             }
         }
     }
