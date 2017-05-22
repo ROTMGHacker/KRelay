@@ -1,21 +1,18 @@
-﻿using Lib_K_Relay;
+﻿using System;
+using Lib_K_Relay;
 using Lib_K_Relay.Interface;
 using Lib_K_Relay.Networking;
 using Lib_K_Relay.Networking.Packets;
+using Lib_K_Relay.Networking.Packets.DataObjects;
 using Lib_K_Relay.Networking.Packets.Server;
 using Lib_K_Relay.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Glow
 {
     public class Glow : IPlugin
     {
         public string GetAuthor()
-        { return "KrazyShank / Kronks"; }
+        { return "KrazyShank / Kronks / RotMGHacker"; }
 
         public string GetName()
         { return "Glow"; }
@@ -24,19 +21,27 @@ namespace Glow
         { return "You're so excited about K Relay that you're literally glowing!"; }
 
         public string[] GetCommands()
-        { return new string[] { "/AmISpecial" }; }
+        {
+            return new[]
+            {
+                "/AmISpecial",
+                "/Glow [On|Off] - You need to reconnect for the changes to apply"
+            };
+        }
 
         public void Initialize(Proxy proxy)
         {
             proxy.HookPacket(PacketType.UPDATE, OnUpdate);
+
             proxy.HookCommand("amispecial", OnSpecialCommand);
+            proxy.HookCommand("glow", OnGlowCommand);
         }
 
-        private void OnSpecialCommand(Client client, string command, string[] args)
+        private static void OnSpecialCommand(Client client, string command, string[] args)
         {
             Random r = new Random();
             int val = 0;
-            for (int i = 0; i < 10 ; i++)
+            for (int i = 0; i < 10; ++i)
             {
                 val += r.Next(400000, 723411);
                 client.SendToClient(PluginUtils.CreateNotification(
@@ -44,18 +49,51 @@ namespace Glow
             }
         }
 
-        private void OnUpdate(Client client, Packet packet)
+        private static void OnGlowCommand(Client client, string command, string[] args)
         {
-            UpdatePacket update = (UpdatePacket)packet;
-
-            for (int i = 0; i < update.NewObjs.Length; i++)
+            if (args.Length == 0)
             {
-                if (update.NewObjs[i].Status.ObjectId == client.ObjectId)
+                GlowSettings.Default.GlowEnable = !GlowSettings.Default.GlowEnable;
+            }
+            else
+            {
+                switch (args[0])
                 {
-                    for (int j = 0; j < update.NewObjs[i].Status.Data.Length; j++)
+                    case "on":
+                    case "enable":
+                        GlowSettings.Default.GlowEnable = true;
+                        break;
+                    case "off":
+                    case "disable":
+                        GlowSettings.Default.GlowEnable = false;
+                        break;
+                    default:
+                        client.SendToClient(PluginUtils.CreateOryxNotification("Glow", "Unrecognized command: " + args[0]));
+                        return;
+                }
+            }
+
+            GlowSettings.Default.Save();
+            client.SendToClient(PluginUtils.CreateNotification(client.ObjectId, "Glow " + (GlowSettings.Default.GlowEnable ? "enabled" : "disabled") + "!"));
+        }
+
+        private static void OnUpdate(Client client, Packet packet)
+        {
+            if (!GlowSettings.Default.GlowEnable)
+            { return; }
+
+            UpdatePacket update = (UpdatePacket) packet;
+
+            foreach (Entity ent in update.NewObjs)
+            {
+                if (ent.Status.ObjectId != client.ObjectId)
+                { continue; }
+
+                foreach (StatData data in ent.Status.Data)
+                {
+                    if (data.Id == 59)
                     {
-                        if (update.NewObjs[i].Status.Data[j].Id == 59)
-                            update.NewObjs[i].Status.Data[j].IntValue = 100;
+                        data.IntValue = 100;
                     }
                 }
             }
